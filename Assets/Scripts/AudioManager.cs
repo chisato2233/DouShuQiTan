@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(s.clip);
         }
-        else Debug.LogError($"No sound found{name}");
+        else Debug.LogError($"No sound found  {name}");
     }
     public void ToggleMusic()
     {

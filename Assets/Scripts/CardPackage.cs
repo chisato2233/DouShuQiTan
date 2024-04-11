@@ -105,7 +105,7 @@ public class CardPackage : MonoBehaviour
                 GameData.HoldCard[random] = Random.Range(0, 29);
                 GameData.HasZhenXing[random] = false;
                 GameData.IsUpGrade[random] = false;
-                //±ªªªµÙµƒø®≈∆
+                //Ë¢´Êç¢ÊéâÁöÑÂç°Áâå
                 var ChangedCard = cards[random];
                 DG.Tweening.Sequence sequence = DOTween.Sequence();
                 Vector3 startScale = ChangedCard.transform.localScale;
@@ -117,7 +117,7 @@ public class CardPackage : MonoBehaviour
                 sequence.Append(ChangedCard.transform.DOScale(startScale, 1f));
                 sequence.Append(ChangedCard.transform.DOScale(0, 0.5f));
 
-                //–¬ø®
+                //Êñ∞Âç°
                 var Newcard = Resources.Load<GameObject>("Test/" + ((CardType)GameData.HoldCard[random]).ToString());
                 if (Newcard != null)
                 {
@@ -166,7 +166,7 @@ public class CardPackage : MonoBehaviour
             cards[i].transform.position= transform.GetChild(1).GetChild(i).position;
         }
 
-            GetComponent<PackageScroll>().enabled = true;
+        GetComponent<PackageScroll>().enabled = true;
         gameObject.SetActive(false);
     }
 

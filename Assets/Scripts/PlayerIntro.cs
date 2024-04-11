@@ -9,7 +9,7 @@ public class PlayerIntro : MonoBehaviour
     public string sceneName;
     public GameObject Package;
     //public static bool IsWin=false;    
-    //´æµµÎ»ÖÃ
+    //å­˜æ¡£ä½ç½®
     //string Filepath = "D:" + "/card.txt";
     string Filepath;
     string Filepath_1;
@@ -32,33 +32,33 @@ public class PlayerIntro : MonoBehaviour
     {
         Debug.Log(((CardType)1).ToString());
     }
-    //±êÌâ
+    //æ ‡é¢˜
     public void title()
     {
         transitionManager.LoadScene(sceneName, "SlowFade", 0f);
 
     }
 
-    //·µ»ØÖ÷½çÃæ
+    //è¿”å›ä¸»ç•Œé¢
     public void Return()
     {
         save();
         save_1();
         PlayerPrefs.SetFloat("HP", GameData.HP);
-
+        AudioManager.Instance.musicSource.Stop();
         sceneName = "start";
-        transitionManager.LoadScene(sceneName, "SlowFade", 0f);
+        transitionManager.LoadScene(sceneName, "RectangleGrid", 0.2f);
         
     }
     void save()
     {
-        //´æµµ
+        //å­˜æ¡£
         if (!File.Exists(Filepath))
         {
             FileStream fileStream = new FileStream(Filepath, FileMode.OpenOrCreate);
             fileStream.Close();
         }
-        //Çå¿ÕÎÄ¼ş
+        //æ¸…ç©ºæ–‡ä»¶
         FileStream fs = File.Open(Filepath, FileMode.OpenOrCreate, FileAccess.Write);
         fs.Seek(0, SeekOrigin.Begin);
         fs.SetLength(0);
@@ -69,11 +69,11 @@ public class PlayerIntro : MonoBehaviour
             string[] cardsFile = new string[GameData.HoldCard.Count];
             for (int i = 0; i < GameData.HoldCard.Count; i++)
             {
-                //ÀàĞÍ
+                //ç±»å‹
                 string card = GameData.HoldCard[i].ToString();
-                //ÊÇ·ñÉı¼¶
+                //æ˜¯å¦å‡çº§
                 card = card + '\t' + (GameData.IsUpGrade[i] == true ? 1.ToString() : 0.ToString());
-                //ÊÇ·ñÓĞÕóĞÍ
+                //æ˜¯å¦æœ‰é˜µå‹
                 card = card + '\t' + (GameData.HasZhenXing[i] == true ? 1.ToString() : 0.ToString());
 
                 var zhenXing = GameData.ZhenXing[i];
@@ -93,13 +93,13 @@ public class PlayerIntro : MonoBehaviour
     }
     void save_1()
     {
-        //´æµµ
+        //å­˜æ¡£
         if (!File.Exists(Filepath_1))
         {
             FileStream fileStream = new FileStream(Filepath_1, FileMode.OpenOrCreate);
             fileStream.Close();
         }
-        //Çå¿ÕÎÄ¼ş
+        //æ¸…ç©ºæ–‡ä»¶
         FileStream fs = File.Open(Filepath_1, FileMode.OpenOrCreate, FileAccess.Write);
         fs.Seek(0, SeekOrigin.Begin);
         fs.SetLength(0);
@@ -112,35 +112,35 @@ public class PlayerIntro : MonoBehaviour
             string bead = "";
             for (int i = 0; i < GameData.ExtraGrade.Count; i++)
             {
-                //³õÊ¼µÈ¼¶
+                //åˆå§‹ç­‰çº§
                 bead = GameData.ExtraGrade[i].ToString();
-                //Ã¿´Î¶îÍâÉı¼¶
+                //æ¯æ¬¡é¢å¤–å‡çº§
                 bead = bead + '\t' + GameData.OnceUpGrade[i].ToString();
 
                 beadsFile[i] = bead;
             }
-            //Ç°Èı´Î½ø»¯³öÊôĞÔµÄ¸ÅÂÊ
+            //å‰ä¸‰æ¬¡è¿›åŒ–å‡ºå±æ€§çš„æ¦‚ç‡
             bead = GameData.ExtraRandom[0].ToString();
             beadsFile[GameData.ExtraGrade.Count] = bead;
-            //¸÷ÊôĞÔ¸ÅÂÊ
+            //å„å±æ€§æ¦‚ç‡
             bead = GameData.ShuXingGaiLv[0][0].ToString() + '\t' + GameData.ShuXingGaiLv[0][1].ToString()
                 + '\t' + GameData.ShuXingGaiLv[0][2].ToString() + '\t' + GameData.ShuXingGaiLv[0][3].ToString()
                 + '\t' + GameData.ShuXingGaiLv[0][4].ToString();
             beadsFile[GameData.ExtraGrade.Count + 1] = bead;
-            //¸÷ÊôĞÔÊÇ·ñÇ¿»¯
+            //å„å±æ€§æ˜¯å¦å¼ºåŒ–
             bead = GameData.TuUp.ToString() + '\t' + GameData.ShuiUp.ToString() + '\t'
                 + GameData.HuoUp.ToString() + '\t' + GameData.FengUp.ToString();
             beadsFile[GameData.ExtraGrade.Count + 2] = bead;
             File.WriteAllLines(Filepath_1, beadsFile);
         }
     }
-    //²»·µ»Ø¿ªÊ¼½çÃæ£¬¹Ø±Õµ¯´°
+    //ä¸è¿”å›å¼€å§‹ç•Œé¢ï¼Œå…³é—­å¼¹çª—
     public void DontExit()
     {
         gameObject.SetActive(false);
     }
 
-    //·µ»ØÖ÷½çÃæºÍÅÆ¿âºÍ´ò²æµÄicon
+    //è¿”å›ä¸»ç•Œé¢å’Œç‰Œåº“å’Œæ‰“å‰çš„icon
     public void EnterButton()
     {
         gameObject.GetComponent<Animator>().SetBool("IsEnter", true);

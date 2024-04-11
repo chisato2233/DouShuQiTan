@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -88,7 +89,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
             {
                 Boss();
             }
-            transitionManager.LoadScene(sceneName, "Fade", 0f);
+            transitionManager.LoadScene(sceneName, "RectangleGrid", 0f);
 
         }
         else if(mark==2)
@@ -119,12 +120,12 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
                 {
                     Elite();
                 }
-                transitionManager.LoadScene(sceneName, "Fade", 0f);
+                transitionManager.LoadScene(sceneName, "RectangleGrid", 0f);
 
             }
             else if(branch==4)
             {
-                //ÔöÒæ
+                //å¢ç›Š
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
@@ -136,7 +137,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
             }
             else if(branch==5)
             {
-                //¼õÒæ
+                //å‡ç›Š
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
@@ -148,7 +149,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
             }
             else if(branch==6)
             {
-                //ÖĞÁ¢
+                //ä¸­ç«‹
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
@@ -160,7 +161,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
             }
             else if(branch==7)
             {
-                //ÌôÕ½
+                //æŒ‘æˆ˜
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
@@ -176,7 +177,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
     }
     public void save()
     {
-        //Õ½¶·½çÃæÔÚÕ½¶·½±ÀøÊ±ÔÙ´æµµ
+        //æˆ˜æ–—ç•Œé¢åœ¨æˆ˜æ–—å¥–åŠ±æ—¶å†å­˜æ¡£
         node _node = explore.Nodes[abscissa][ordinate];
         _node.state = 3;
         explore.Nodes[abscissa][ordinate] = _node;
@@ -189,7 +190,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
                 explore.Nodes[abscissa][i] = node_1;
             }
         }
-        explore.save();
+        SaveNodeToJason.Save(explore.Nodes,explore.Filepath);
         ExploreSystem.nowLayer++;
         PlayerPrefs.SetInt("nowLayer", ExploreSystem.nowLayer);
         explore.IsNewLayer = true;
@@ -248,7 +249,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
     }
     void Boss()
     {
-        //BossÎŞÄÑ¶ÈÖ®·Ö
+        //Bossæ— éš¾åº¦ä¹‹åˆ†
         GameData.Enemy = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
         GameData.abscissa = abscissa;
         GameData.ordinate = ordinate;

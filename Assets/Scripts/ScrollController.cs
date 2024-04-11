@@ -30,7 +30,7 @@ public class ScrollController : MonoBehaviour,IDragHandler,IBeginDragHandler,IEn
         if (position.y >= -10 && position.y <= 10)
         {
             IsDrag = true;
-            position += new Vector2(0, move.y * Time.deltaTime * DragSpeed);//一定要记得乘以每帧的时间，相当于每帧移动Speed个速度
+            position += new Vector2(0, move.y * Time.deltaTime * DragSpeed);//涓�瀹氳璁板緱涔樹互姣忓抚鐨勬椂闂达紝鐩稿綋浜庢瘡甯хЩ鍔⊿peed涓�熷害
             if (position.y > 10)
                 position = new Vector2(position.x, 10);
             if (position.y < -10)
@@ -83,12 +83,11 @@ public class ScrollController : MonoBehaviour,IDragHandler,IBeginDragHandler,IEn
                 for(int j=0;j<Nodes[i].Count;j++)
                 {
                     node _node = Nodes[i][j];
-                    for(int t=0;t<_node.LinkedNodes.Count;t++)
-                    {
+                    for(int t=0;t<_node.LinkedNodes.Count;t++) {
                         var num = _node.LinkedNodes[t];
-                        var line=GameObject.Find("line" + i + j+num);
+                        var line=GameObject.Find($"line_{i}_{j}_{num}");
                         if (line != null)
-                        {
+                        {    
                             LineRenderer linerenderer = line.GetComponent<LineRenderer>();
 
                             linerenderer.SetPositions(

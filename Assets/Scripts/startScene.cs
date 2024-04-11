@@ -33,9 +33,7 @@ public class startScene : MonoBehaviour
         StopExplo = PlayerPrefs.GetInt("StopExplo",0);
         var continueGameButton = Menu.transform.Find("Continue").gameObject;
         if (StopExplo == 0) {
-            var color = continueGameButton.GetComponent<TextMeshProUGUI>().color;
-            Color anText = new Color(color.r, color.g, color.b, 0.3f);
-            continueGameButton.GetComponent<TextMeshProUGUI>().color = anText;
+            continueGameButton.GetComponentInChildren<startButton>().Disable();
         }
     }
     public void StartGame() {

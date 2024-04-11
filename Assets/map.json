@@ -1,0 +1,320 @@
+[
+  [
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        -3.17376137,
+        -3.88903284
+      ],
+      "state": 3,
+      "LinkedNodes": []
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -1.25929546,
+        -4.01550627
+      ],
+      "state": 1,
+      "LinkedNodes": []
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -3.769576,
+        -1.62345421
+      ],
+      "state": 2,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 4,
+      "position": [
+        0.0144985318,
+        -1.68400359
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -3.94344282,
+        0.6443725
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -4.693757,
+        3.09382057
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -0.300293028,
+        3.25773144
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 6,
+      "position": [
+        1.76634324,
+        3.38754
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        6.70508146,
+        3.304034
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 2,
+      "branch": 0,
+      "position": [
+        -3.17531776,
+        5.721748
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    },
+    {
+      "mark": 2,
+      "branch": 0,
+      "position": [
+        0.983752549,
+        5.52687025
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 5,
+      "position": [
+        2.888407,
+        5.59681559
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 4,
+      "branch": 3,
+      "position": [
+        0.0,
+        8.0
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1,
+        2
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -4.01313972,
+        10.22467
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 6,
+      "position": [
+        0.268405974,
+        10.288662
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 4,
+      "position": [
+        2.60745,
+        10.40606
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 4,
+      "position": [
+        6.68890429,
+        10.4750061
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        -3.19954348,
+        12.8628979
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        0.829343259,
+        12.9322338
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "mark": 2,
+      "branch": 0,
+      "position": [
+        3.49523473,
+        12.7672644
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        -3.405642,
+        15.20588
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        -1.02967536,
+        15.2495022
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1,
+        2
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        3.07293367,
+        15.149682
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        2
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 5,
+      "branch": 0,
+      "position": [
+        0.0,
+        19.6
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1,
+        2
+      ]
+    }
+  ]
+]

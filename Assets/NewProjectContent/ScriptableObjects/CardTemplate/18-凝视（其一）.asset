@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: "18-\u51DD\u89C6\uFF08\u5176\u4E00\uFF09"
+  m_EditorClassIdentifier: Assembly-CSharp:DouShuQiTan:CardTemplate
+  Id: 18
+  Name: "\u51DD\u89C6\uFF08\u5176\u4E00\uFF09"
+  Type: "\u8BAD\u8BEB"
+  "\u67A2\u5143Num": 4
+  Range: {x: 3, y: 4}
+  Describe: "\u7ED9\u4E88\u654C\u65B9\u5355\u4F532\u5C42\u5B71\u5F31"
+  UpgradeDescribe: "\u7ED9\u4E88\u654C\u65B9\u5355\u4F533\u5C42\u5B71\u5F31"
+  Comment: 
+  Material: {fileID: 0}
+  RuntimeCard: {fileID: 5532524760296808532, guid: 6c55ea9b4d4ab0344945b3cee257de65, type: 3}

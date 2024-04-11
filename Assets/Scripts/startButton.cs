@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Color = System.Drawing.Color;
 
 public class startButton : MonoBehaviour
 {
@@ -12,15 +17,13 @@ public class startButton : MonoBehaviour
         //start = transform.parent.GetComponent<startScene>();
         start = transform.GetComponentInParent<startScene>();
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Disable() {
+        var newcolor = gameObject.GetComponent<TextMeshProUGUI>().color;
+        newcolor.a = 0.3f;
+        transform.parent.gameObject.GetComponent<EventTrigger>().enabled = false;
+        transform.parent.gameObject.GetComponent<Button>().interactable = false;
+        gameObject.GetComponent<TextMeshProUGUI>().color = newcolor;
     }
     public void Enter()
     {

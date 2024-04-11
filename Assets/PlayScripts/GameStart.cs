@@ -315,11 +315,7 @@ public class GameStart : MonoBehaviour {
         ChoosedCard.Add(m_CardSpecialAsstet);
         ChoosedCard.Add(m_CardSpecialAsstet);
 
-        {
-            if (GameData.IsOne)
-           
-            
-        }
+      InitializeGameData();
 
     }
 
@@ -374,7 +370,6 @@ public class GameStart : MonoBehaviour {
         TuUp = GameData.TuUp;
         FengUp = GameData.FengUp;
     }
-
 
     void CreateInitialCardsAndBeads() {
         //咒术
@@ -436,7 +431,6 @@ public class GameStart : MonoBehaviour {
         HuoUp = 0; ShuiUp = 0; TuUp = 0; FengUp = 0;
     }
 
-
     void CreateAllTypeCard(){
         for(int i = 0; i< 29; i++) {
             CardModel cardmod = new() {
@@ -449,9 +443,8 @@ public class GameStart : MonoBehaviour {
         }
     }
 
-
     private void LoadCardResource() {
-        m_CardAttactAsset = Resources.Load<GameObject>("Test/Attact");
+        m_CardAttactAsset = Resources.Load<GameObject>("Test/Attack");
         m_CardDefendAsset = Resources.Load<GameObject>("Test/Defend");
         m_CardSpecialAsstet = Resources.Load<GameObject>("Test/Special");
         m_CardFengTu = Resources.Load<GameObject>("Test/FengTu");
@@ -698,6 +691,7 @@ public class GameStart : MonoBehaviour {
             }
         }
     }
+
     public void UseSkill()
     {
         if(gameTurn == GameTurn.playerTurn&&SkillNowNum>=SkillNeedNum)
@@ -2044,11 +2038,12 @@ public class GameStart : MonoBehaviour {
 
     private void CardAct(CardModel card, int n, float tm)
     {
+
         AudioManager.Instance.PlaySfx("InspireCard");
         if (card.cardType == CardType.Attact || card.cardType == CardType.YiShi || card.cardType == CardType.LuLi1||
             card.cardType == CardType.LuLi2 || card.cardType == CardType.NiLv)
         {
-            float actualValue = card.value;
+            float actualValue = card.value*1000000;
             if (player.GetComponent<Player>().IsXieli > 0)
             {
                 actualValue *= 0.8f;

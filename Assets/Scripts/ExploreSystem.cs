@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using UnityEditor;
 using TMPro;
+using Newtonsoft.Json;
 //using System.Int32;
 
 public static class GameData {
@@ -52,18 +53,50 @@ public static class GameData {
     //各属性是否强化
     public static int HuoUp, ShuiUp, TuUp, FengUp;
 }
-public struct node
-{
-    //哪种结点，1敌人2休息3事件4精英5Boss
-    public int mark;
-    //敌人，1风2云3精英4Boss
-    //哪个事件,1风2云3精4增5减6中7赌
-    public int branch;//对mark1,3有用
-    //public float scale;
-    public float[] position;
-    public int state;//状态,1不可探索2可探索3探索完成
-    public List<int> LinkedNodes;
+
+
+
+[System.Serializable]
+public class SerializableNodes {
+    public List<NodeWrapper> allNodes = new List<NodeWrapper>();
+
+    // NodeWrapper类用于包装每个节点以及其属于的层级信息
+    [System.Serializable]
+    public class NodeWrapper {
+        public node node;
+        public int layerIndex; // 节点所属的层级
+
+        public NodeWrapper(node node, int layerIndex) {
+            this.node = node;
+            this.layerIndex = layerIndex;
+        }
+    }
+
+    // 将嵌套列表转换为一维列表并记录层级信息
+    public void ConvertFromNestedList(List<List<node>> nestedList) {
+        allNodes.Clear();
+        for (int i = 0; i < nestedList.Count; i++) {
+            foreach (var node in nestedList[i]) {
+                allNodes.Add(new NodeWrapper(node, i));
+            }
+        }
+    }
+
+    // 从一维列表恢复嵌套列表
+    public List<List<node>> ConvertToNestedList() {
+        List<List<node>> nestedList = new List<List<node>>();
+        foreach (var wrapper in allNodes) {
+            // 确保有足够的层级列表
+            while (nestedList.Count <= wrapper.layerIndex) {
+                nestedList.Add(new List<node>());
+            }
+            nestedList[wrapper.layerIndex].Add(wrapper.node);
+        }
+        return nestedList;
+    }
 }
+
+
 
 public class ExploreSystem : MonoBehaviour
 {
@@ -78,7 +111,7 @@ public class ExploreSystem : MonoBehaviour
     public int layerNumber=10;
     public float layerdistance=2f;
     public bool IsNewLayer=false;
-    public static int nowLayer = 1;
+    public static int nowLayer = 10;
     public List<int> elite = new List<int>{ 5 };
     public List<float> scale;
     //存数据
@@ -88,10 +121,11 @@ public class ExploreSystem : MonoBehaviour
     private ScrollController scrollController;
     //string Filepath = "D:"+"/map.txt";
     //导出后改
-    string Filepath;
+    public string Filepath { get; private set; } 
+
     // Start is called before the first frame update
     private void Awake() {
-        Filepath = Application.dataPath + "/map.txt"; 
+        Filepath = Application.dataPath + "/map.json";
         layerNumber = 10;
         elite = new List<int> { 5 };
         layerdistance = 2.4f;
@@ -128,9 +162,7 @@ public class ExploreSystem : MonoBehaviour
     {
         AudioManager.Instance.PlaySfx("PlaceMouse");
     }
-    void Start() {
-        
-    }
+
     public void UpdateHP() {
         if(HPimage!=null) {
             float HP=GameData.HP,MaxHp=GameData.MaxHp;
@@ -234,12 +266,12 @@ public class ExploreSystem : MonoBehaviour
                     }
 
                 }
-                save();
+                SaveNodeToJason.Save(Nodes, Filepath);
             }
             
         }
 
-        }
+    }
     void CreateBossLayer(int i) {
         //Boss
         List<node> noderow = new List<node> { };
@@ -388,11 +420,11 @@ public class ExploreSystem : MonoBehaviour
                 for (int t = 0; t < Nodes[i - 1].Count; t++) {
                     if ((UnityEngine.Random.Range(2, 5) > 2 && _node.LinkedNodes.Count < 3)
                         || _node.LinkedNodes.Count < 1) {
-                        DrawLine(noderow, i, noderow.Count, t, _node);
+                        DrawLine(noderow, i, j, t, _node);
                     }
                     else if (noderow.Count > 0) {
                         if (!noderow[(noderow.Count - 1)].LinkedNodes.Contains(t))
-                            DrawLine(noderow, i, noderow.Count, t, _node);
+                            DrawLine(noderow, i, j, t, _node);
                     }
                 }
                 nodeRow = LoadGameObject(nodeRow, _node);
@@ -565,50 +597,66 @@ public class ExploreSystem : MonoBehaviour
         IsNewExplo = false;
         CreateFirstLayer(0);
         for (int i = 1; i < layerNumber - 1; i++) {
-            //if (elite.Contains(i)) CreateEliteLayer(i);
-            //else
-            CreateNormalLayer(i);
+            if (elite.Contains(i)) CreateEliteLayer(i);
+            else CreateNormalLayer(i);
         }
         //CreateRelaxLayer(layerNumber - 2);
         CreateBossLayer(layerNumber - 1);
-        save();
+        
+        SaveNodeToJason.Save(Nodes, Filepath);
     }
     void CreateMap() {
         if(IsNewExplo) 
             CreateNewMap();
         else LoadFile();
     }
-    void DrawLine(List<node> noderow, int i,int j,int t,node _node) {
-        bool IsDraw = _node.LinkedNodes.Contains(t - 1) || 
-                      t == 0 ||
-                      _node.LinkedNodes.Count<=0;
+    // 绘制连接节点之间的线条
+    void DrawLine(List<node> currentLayerNodes, int currentLayerIndex, int currentNodeIndex, int targetNodeIndex, node currentNode) {
+        // 判断是否需要绘制线条
+        bool shouldDrawLine = ShouldDrawLine(currentLayerNodes, currentLayerIndex, currentNodeIndex, targetNodeIndex, currentNode);
 
-        if (!elite.Contains(i) && i != layerNumber - 1 && i != 0) {
-            for(int x=0;x< noderow.Count;x++)
-                if (noderow[x].LinkedNodes.Contains(t + 1)) {
-                    IsDraw = false;
-                    break;
+        // 如果需要绘制，调用LoadLine进行实际的绘制
+        if (shouldDrawLine) {
+            LoadLine(currentLayerNodes, currentLayerIndex, currentNodeIndex, targetNodeIndex, currentNode);
+            currentNode.LinkedNodes.Add(targetNodeIndex);
+        }
+    }
+
+    // 检查是否需要绘制线条的逻辑
+    bool ShouldDrawLine(List<node> currentLayerNodes, int currentLayerIndex, int currentNodeIndex, int targetNodeIndex, node currentNode) {
+        bool isDirectlyLinked = currentNode.LinkedNodes.Contains(targetNodeIndex - 1) || targetNodeIndex == 0 || currentNode.LinkedNodes.Count <= 0;
+
+        // 对于非精英层，且不是最后一层，检查是否有其他节点已经连接到目标节点
+        if (!elite.Contains(currentLayerIndex) && currentLayerIndex != layerNumber - 1 && currentLayerIndex != 0) {
+            foreach (var node in currentLayerNodes) {
+                if (node.LinkedNodes.Contains(targetNodeIndex + 1)) {
+                    return false; // 已有其他节点连接到目标，不需要再绘制
                 }
+            }
         }
-        
-        if(IsDraw) {
-            LoadLine(noderow, i,j, t, _node);
-        }
-            
+
+        return isDirectlyLinked;
+    }
+
+    // 实际创建和定位连接线条的方法
+    void LoadLine(List<node> noderow, int layerIndex, int nodeIndex, int targetIndex, node currentNode) {
+        // 从Resources加载线条的Prefab
+        var linePrefab = Resources.Load<GameObject>("Prefabs/line");
+        GameObject lineInstance = Instantiate(linePrefab, backGround.transform.GetChild(0));
+
+        // 设置线条的名称，表示其连接的节点
+        lineInstance.name = $"line_{layerIndex}_{nodeIndex}_{targetIndex}";
+
+        // 获取并设置LineRenderer的位置
+        LineRenderer lineRenderer = lineInstance.GetComponent<LineRenderer>();
+        Vector3 startPos = new Vector3(Nodes[layerIndex - 1][targetIndex].position[0], Nodes[layerIndex - 1][targetIndex].position[1], 0);
+        Vector3 endPos = new Vector3(currentNode.position[0], currentNode.position[1], 0);
+        lineRenderer.SetPositions(new Vector3[] { startPos, endPos });
+
         
     }
-    void LoadLine(List<node> noderow, int i, int j,int t, node _node) {
-        var line = Resources.Load<GameObject>("Prefabs/line");
-        line = Instantiate(line, backGround.transform.GetChild(0));
-        line.name = "line" + i+j+t;
-        LineRenderer linerenderer = line.GetComponent<LineRenderer>();
-        
-        linerenderer.SetPositions(
-            new Vector3[]
-            { new Vector3(Nodes[i-1][t].position[0],Nodes[i-1][t].position[1],0),
-                                new Vector3(_node.position[0],_node.position[1],0) });
-        _node.LinkedNodes.Add(t);
-    }
+
+
     public void save()
     {
         //if(!File.Exists(Application.dataPath+ "/map.txt"))
@@ -649,65 +697,24 @@ public class ExploreSystem : MonoBehaviour
         }
         File.WriteAllLines(Filepath, nodesFile);
     }
-    void LoadFile()
-    {
-        string[] nodesFile = File.ReadAllLines(Filepath);
-        for (int i = 0; i < nodesFile.Length; i++)
-        {
-            //List<string> noderow = new List<string> { };
-            //if (i == (int)nodesFile[i][0])
-            //{
-            //    noderow.Add(nodesFile[i]);
+    void LoadFile() {
+        Nodes = SaveNodeToJason.LoadNodesFromFile(Filepath);
+        
 
-            //}
-            string[] noderowstring = nodesFile[i].Split('\t');
-            List<node> noderow = new List<node> { };
+        for (int i = 0; i <Nodes.Count; i++) {
+
+            List<node> noderow = Nodes[i];
             List<GameObject> nodeRow = new List<GameObject> { };
-            for (int j = 0; j < noderowstring.Length; j++)
-            {
-                
-                string[] singlenode = noderowstring[j].Split('\'');
-                node _node;
-                //_node.mark = Int32.Parse(singlenode[0]);
-                Int32.TryParse(singlenode[0], out _node.mark);
-                Int32.TryParse(singlenode[1], out _node.branch);
-                _node.position = new float[2];
-                float.TryParse(singlenode[2], out _node.position[0]);
-                float.TryParse(singlenode[3], out _node.position[1]);
-
-                //if(GameData.IsWin&&i==GameData.abscissa&&j==GameData.ordinate)
-                //{
-                //    GameData.IsWin = false;
-                //    _node.state = 3;
-                //    nowLayer++;
-                //    PlayerPrefs.SetInt("nowLayer", nowLayer);
-                //}
-                //else
-                    Int32.TryParse(singlenode[4], out _node.state);
-
-                _node.LinkedNodes = new List<int> { };
-                if (i != 0)
-                {
-                    for(int x=5;x<singlenode.Length;x++)
-                    {
-                        int linkednodes = 0;
-                        Int32.TryParse(singlenode[x], out linkednodes);
-                        _node.LinkedNodes.Add(linkednodes);
-                    }
-                    for (int t = 0; t < Nodes[i - 1].Count; t++)
-                    {
-                        if(_node.LinkedNodes.Contains(t))
-                            LoadLine(noderow, i,noderow.Count, t, _node);
+            for (int j = 0; j < noderow.Count; j++) {
+                node _node = noderow[j];
+                if (i != 0) {
+                    foreach (var t in _node.LinkedNodes) {
+                       LoadLine(noderow, i,j, t, _node);
                     }
                 }
-                noderow.Add(_node);
                 nodeRow = LoadGameObject(nodeRow, _node);
-
-
             }
-            Nodes.Add(noderow);
             NodeObjects.Add(nodeRow);
-
         }
         //save();
     }
