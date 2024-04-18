@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DouShuQiTan;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,7 +22,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
     void Start()
     {
         transitionManager = GameObject.Find("TransitionManager").GetComponent<EasyTransition.TransitionManager>();
-        sceneName = "SampleScene";
+        sceneName = GameSceneName.GameScene;
     }
     private void Awake()
     {
@@ -97,51 +98,45 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
             var canvas=GameObject.Find("Canvas");
             if(canvas!=null)
             {
-                var rest = canvas.transform.GetChild(1).gameObject;
+                var rest = canvas.transform.Find("Rest").gameObject;
                 rest.GetComponent<Rest>().node = this;
                 rest.SetActive(true);
                 rest.GetComponent<Animator>().Play("appear");
             }
         }
-        else if(mark==3)
-        {
-            if(branch==1||branch==2||branch==3)
-            {
-                if (branch == 1)
-                {
+        else if(mark==3) {
+            if(branch==1||branch==2||branch==3) {
+                if (branch == 1) {
                     Feng();
                 }
-                else if (branch == 2)
-                {
+                else if (branch == 2) {
                     Yun();
                 }
 
-                else if (branch == 3)
-                {
+                else if (branch == 3) {
                     Elite();
                 }
                 transitionManager.LoadScene(sceneName, "RectangleGrid", 0f);
 
             }
-            else if(branch==4)
-            {
+
+            else if(branch==4) {
                 //增益
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
-                    var good = canvas.transform.GetChild(2).gameObject;
+                    var good = canvas.transform.Find("good").gameObject;
                     good.GetComponent<Events>().node = this;
                     good.SetActive(true);
                     good.GetComponent<Animator>().Play("eventAppear");
                 }
             }
-            else if(branch==5)
-            {
+            else if(branch==5) {
                 //减益
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
-                    var good = canvas.transform.GetChild(3).gameObject;
+                    var good = canvas.transform.Find("bad").gameObject;
                     good.GetComponent<Events>().node = this;
                     good.SetActive(true);
                     good.GetComponent<Animator>().Play("eventAppear");
@@ -153,7 +148,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
-                    var good = canvas.transform.GetChild(4).gameObject;
+                    var good = canvas.transform.Find("medium").gameObject;
                     good.GetComponent<Events>().node = this;
                     good.SetActive(true);
                     good.GetComponent<Animator>().Play("eventAppear");
@@ -165,7 +160,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
                 var canvas = GameObject.Find("Canvas");
                 if (canvas != null)
                 {
-                    var good = canvas.transform.GetChild(5).gameObject;
+                    var good = canvas.transform.Find("challenge").gameObject;
                     good.GetComponent<Events>().node = this;
                     good.SetActive(true);
                     good.GetComponent<Animator>().Play("eventAppear");
@@ -175,8 +170,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
         }
 
     }
-    public void save()
-    {
+    public void save() {
         //战斗界面在战斗奖励时再存档
         node _node = explore.Nodes[abscissa][ordinate];
         _node.state = 3;
@@ -193,7 +187,9 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
         SaveNodeToJason.Save(explore.Nodes,explore.Filepath);
         ExploreSystem.nowLayer++;
         PlayerPrefs.SetInt("nowLayer", ExploreSystem.nowLayer);
+        
         explore.IsNewLayer = true;
+        explore.UpdateNowLayer();
     }
     void Feng()
     {
@@ -210,7 +206,7 @@ public class Node : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoi
         else if (abscissa == 1 || abscissa == 2)
             GameData.Enemy[Random.Range(0, 2)]++;
         else
-        GameData.Enemy[UnityEngine.Random.Range(0, 3)]++;
+            GameData.Enemy[UnityEngine.Random.Range(0, 3)]++;
         //    if (i > 0 && UnityEngine.Random.Range(1, 3) < 2)
         //        GameData.Enemy[UnityEngine.Random.Range(0, 3)]++;
 

@@ -9,6 +9,7 @@ public class CardLoaderWindow : EditorWindow {
     private int startRow = 4; // 默认起始行为4
     private List<string> tableOptions = new List<string>(); 
     private static CardLibrary selectedLibrary;
+    private static GameObject gameObj;
 
     [MenuItem("Tools/Card Loader Settings")]
     public static void ShowWindow() {
@@ -41,13 +42,13 @@ public class CardLoaderWindow : EditorWindow {
 
 
         selectedLibrary = EditorGUILayout.ObjectField("Card Library:", selectedLibrary, typeof(CardLibrary), false) as CardLibrary;
-
+        gameObj = EditorGUILayout.ObjectField("Game Object:", gameObj, typeof(GameObject), true) as GameObject;
         if (GUILayout.Button("Load Card Scripts")) {
             CardXlslLoader.CreateCardScript(selectedLibrary);
         }
 
         if (GUILayout.Button("My Action")) {
-            CardXlslLoader.MyActionToCardLibrary(selectedLibrary);
+            CardXlslLoader.MyActionToCardLibrary(selectedLibrary,gameObj);
         }
     }
 }

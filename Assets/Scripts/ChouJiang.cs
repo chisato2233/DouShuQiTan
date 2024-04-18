@@ -7,26 +7,25 @@ using UnityEngine.UI;
 public class ChouJiang : MonoBehaviour
 {
     float t = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-    private void Awake()
-    {
-        if (ExploreSystem.IsNewExplo)
-        {
+
+    public int PlayerChoose = -1;
+    private UI_MapStartButton button;
+
+    private void Awake() {
+        if (ExploreSystem.IsNewExplo) {
             AudioManager.Instance.PlaySfx("Tiger");
             AudioManager.Instance.PlayMusic("battle");
             for (int i = 0; i < 4; i++)
                 transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("choujiang", true);
-            transform.GetChild(4).GetChild(0).GetComponent<Button>().enabled = false;
+            button = transform.GetChild(5).GetComponentInChildren<UI_MapStartButton>();
+
+
+            
             var JuQing = GameObject.Find("JuQing");
             if(JuQing!=null)
                 JuQing.SetActive(true);
         }
-        else
-        {
+        else {
             transform.parent.gameObject.SetActive(false);
             AudioManager.Instance.PlayMusic("battle");
             var JuQing = GameObject.Find("JuQing");
@@ -34,18 +33,26 @@ public class ChouJiang : MonoBehaviour
                 JuQing.SetActive(false);
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        t += Time.deltaTime;
 
-        if (t > 2)
-        {
-            for(int i=0;i<4;i++)
+    void Start() {
+        StartCoroutine(WaitRollAnimation());
+    }
+
+    private IEnumerator WaitRollAnimation() {
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 4; i++)
             transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("choujiang", false);
-        }
-        if (t > 4.6)
-            transform.GetChild(4).GetChild(0).GetComponent<Button>().enabled = true;
-        
+        yield return new WaitForSeconds(2.6f);
+        for (int i = 0; i < 4; i++)
+            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().enable = true;
+        yield return WaitPlayerChoose();
+    }
+
+    private IEnumerator WaitPlayerChoose() {
+        yield return new WaitUntil(() => PlayerChoose !=-1);
+        for (int i = 0; i < 4; i++)
+            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().enable = false;
+        GameData.咒印index = PlayerChoose;
+        button.Enable();
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DouShuQiTan;
 using UnityEngine;
 
 public class Events : MonoBehaviour
@@ -46,10 +47,10 @@ public class Events : MonoBehaviour
     public void Challenge()
     {
         node.Elite();
-        //Õ½¶·½±Àø²»Í¬
+        //æˆ˜æ–—å¥–åŠ±ä¸åŒ
         GameData.IsChallenge = true;
         transitionManager = GameObject.Find("TransitionManager").GetComponent<EasyTransition.TransitionManager>();
-        sceneName = "SampleScene";
+        sceneName = GameSceneName.GameScene;
         if(transitionManager!=null)
             transitionManager.LoadScene(sceneName, "Fade", 0f);
         

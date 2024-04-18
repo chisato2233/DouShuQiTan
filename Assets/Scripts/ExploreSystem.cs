@@ -6,95 +6,10 @@ using System;
 using UnityEditor;
 using TMPro;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
+using UnityEngine.UI;
+
 //using System.Int32;
-
-public static class GameData {
-    /// <summary>
-    /// 无需存档
-    /// </summary>
-    public static int NanDu = 0;
-    //风0-2，云3-5，精英6，Boss7，各位置上的数字表示有多少该敌人
-    public static int[] Enemy = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-    //是否属于挑战关，奖励不同
-    public static bool IsChallenge = false;
-    //是否是第一关
-    public static bool IsOne = false;
-    //记录该结点为第几个结点，战斗结算用，为了存档
-    public static int abscissa;
-    public static int ordinate;
-    public static bool IsWin = false;
-    /// <summary>
-    /// 需存档
-    /// </summary>
-    public static float HP = 50;
-    public static float MaxHp = 50;
-    //当前持有咒印
-    public static List<int> ZhouYin = new List<int> { };
-    
-    
-    //牌数不大于16，全部手牌通过字典存储
-    //当前持有手牌，一个位置代表一张卡牌，数字为该卡牌类型在字典中的序号，初始化为初始手牌，进入战斗后读取载入对应预制体
-    public static List<int> HoldCard = new List<int> {  };
-    //卡牌是否升级，与上一个List一一对应，表明该牌是否升级，bool值内存小
-    public static List<bool> IsUpGrade = new List<bool> {  };
-    //卡牌是否有阵型
-    public static List<bool> HasZhenXing = new List<bool> { };
-    //卡牌阵型
-    public static List<List<int[]>> ZhenXing = new List<List<int[]>> { };
-
-    //枢元等级强化效果//初始等级，默认值为0（1级（个别
-    public static List<int> ExtraGrade = new List<int> { };
-    //每次升级额外升级，默认值为0（每次升一级（个别
-    public static List<int> OnceUpGrade = new List<int> { };
-    //进化概率，前三次升级进化出属性的概率（全部（提高的次数，每次提高2%）
-    public static List<int> ExtraRandom = new List<int> { };
-    //属性概率，0无1土2水3火4风（全部（百分号前的数）
-    public static List<int[]> ShuXingGaiLv = new List<int[]> { };
-    //各属性是否强化
-    public static int HuoUp, ShuiUp, TuUp, FengUp;
-}
-
-
-
-[System.Serializable]
-public class SerializableNodes {
-    public List<NodeWrapper> allNodes = new List<NodeWrapper>();
-
-    // NodeWrapper类用于包装每个节点以及其属于的层级信息
-    [System.Serializable]
-    public class NodeWrapper {
-        public node node;
-        public int layerIndex; // 节点所属的层级
-
-        public NodeWrapper(node node, int layerIndex) {
-            this.node = node;
-            this.layerIndex = layerIndex;
-        }
-    }
-
-    // 将嵌套列表转换为一维列表并记录层级信息
-    public void ConvertFromNestedList(List<List<node>> nestedList) {
-        allNodes.Clear();
-        for (int i = 0; i < nestedList.Count; i++) {
-            foreach (var node in nestedList[i]) {
-                allNodes.Add(new NodeWrapper(node, i));
-            }
-        }
-    }
-
-    // 从一维列表恢复嵌套列表
-    public List<List<node>> ConvertToNestedList() {
-        List<List<node>> nestedList = new List<List<node>>();
-        foreach (var wrapper in allNodes) {
-            // 确保有足够的层级列表
-            while (nestedList.Count <= wrapper.layerIndex) {
-                nestedList.Add(new List<node>());
-            }
-            nestedList[wrapper.layerIndex].Add(wrapper.node);
-        }
-        return nestedList;
-    }
-}
 
 
 
@@ -103,10 +18,8 @@ public class ExploreSystem : MonoBehaviour
     public static bool IsNewExplo=true;
     public GameObject map;
     public GameObject backGround;
-    public GameObject HPimage;
-    public GameObject HPText;
-    Vector3 HpStart;
-    Vector3 HpStartPos;
+    public GameObject PlayerIcon;
+
 
     public int layerNumber=10;
     public float layerdistance=2f;
@@ -130,10 +43,7 @@ public class ExploreSystem : MonoBehaviour
         elite = new List<int> { 5 };
         layerdistance = 2.4f;
 
-        HPimage = GameObject.Find("PlayerXie");
-        HPText = GameObject.Find("HPtext");
-        HpStart = HPimage.transform.localScale;
-        HpStartPos = HPimage.transform.position;
+
         UpdateHP();
 
         AudioManager.Instance.PlaySfx("EnterNewScene");
@@ -146,14 +56,23 @@ public class ExploreSystem : MonoBehaviour
         IsNewLayer = true;
         scrollController = backGround.GetComponent<ScrollController>();
         scrollController.enabled = false;
-        if(nowLayer==1)
-        {
+        if(nowLayer==1) {
             GameData.IsOne = true;
         }
 
         CreateMap();
         PlayerPrefs.SetInt("StopExplo", 1);
     }
+
+    void Start() {
+        if (Nodes.Count >= layerNumber) {
+            if (scrollController.enabled == false)
+                scrollController.enabled = true;
+            UpdateNowLayer();
+        }
+
+    }
+
     public void PlayClickSFX()
     {
         AudioManager.Instance.PlaySfx("icon");
@@ -164,114 +83,89 @@ public class ExploreSystem : MonoBehaviour
     }
 
     public void UpdateHP() {
-        if(HPimage!=null) {
-            float HP=GameData.HP,MaxHp=GameData.MaxHp;
-            float HalfLenth = 0.8f;
-            
-            //0位小数
-            if(HPText!=null)
-                HPText.GetComponent<TextMeshPro>().text = HP.ToString("F0") + "/" + MaxHp.ToString("F0");
-            float newX = HP * HpStart.x / MaxHp;
-            HPimage.transform.localScale = new Vector3(newX, HpStart.y, HpStart.z);
-            float newPosX1 = HP * HalfLenth / MaxHp;
-            float newPosX = HalfLenth - newPosX1;
-            HPimage.transform.position = new Vector3(HpStartPos.x - newPosX, HpStartPos.y, 0);
+        if (!PlayerIcon) return;
+
+        float HP=GameData.HP,MaxHp=GameData.MaxHp;
+        float HpPrecent = HP / MaxHp;
+        var text = PlayerIcon.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+        var HPimage = PlayerIcon.transform.Find("血槽")?.Find("血量")?.GetComponent<Image>();
+        if (!text||!HPimage) return;
+        text.text = $"{HP}/{MaxHp}";
+        HPimage.fillAmount = HpPrecent;
+    }
+
+    void DisableNode(GameObject NodeObj, node Node) {
+        if (NodeObj.GetComponent<Node>() != null)
+            Destroy(NodeObj.GetComponent<Node>());
+        if (NodeObj.GetComponent<Animator>() != null)
+            Destroy(NodeObj.GetComponent<Animator>());
+
+        if (Node.state == 3) {
+            NodeObj.transform.GetChild(1).gameObject.SetActive(true);
+            NodeObj.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        if (Node.state == 1) {
+            NodeObj.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        //地图生成完
-        if (Nodes.Count >= layerNumber)
-        {
-            if (scrollController.enabled == false)
-                scrollController.enabled = true;
-            //if(backGround.GetComponent<ScrollController>()==null)
-            //backGround.AddComponent<ScrollController>();
-            if (IsNewLayer)
-            {
-                //给正在探索的这一层节点添加脚本
-                IsNewLayer = false;
-                for(int i=0;i<nowLayer-1;i++)
-                {
-                    for(int j=0;j<Nodes[i].Count;j++)
-                    {
-                        if (NodeObjects[i][j].GetComponent<Node>() != null)
-                            Destroy(NodeObjects[i][j].GetComponent<Node>());
-                        if (NodeObjects[i][j].GetComponent<Animator>() != null)
-                            Destroy(NodeObjects[i][j].GetComponent<Animator>());
-                        if (Nodes[i][j].state == 3)
-                        {
-                            NodeObjects[i][j].transform.GetChild(1).gameObject.SetActive(true);
-                            NodeObjects[i][j].transform.GetChild(0).gameObject.SetActive(true);
 
-                        }
-                        if (Nodes[i][j].state == 1)
-                        {
-                            NodeObjects[i][j].transform.GetChild(0).gameObject.SetActive(true);
 
-                        }
-                    }
-                }
-                for (int i = 0; i < Nodes[nowLayer - 1].Count; i++)
-                {
-                    bool IsExplore = false;
-                    node _node = Nodes[nowLayer - 1][i];
-                    if (nowLayer == 1)
+    public void UpdateNowLayer() {
+        for (int i = 0; i < nowLayer - 1; i++) {
+            for (int j = 0; j < Nodes[i].Count; j++) {
+                DisableNode(NodeObjects[i][j], Nodes[i][j]);
+            }
+        }
+
+        
+        for (int i = 0; i < Nodes[nowLayer - 1].Count; i++) {
+            bool IsExplore = false;
+            node _node = Nodes[nowLayer - 1][i];
+            if (nowLayer == 1)  IsExplore = true;
+            else {
+                for (int j = 0; j < _node.LinkedNodes.Count; j++) {
+                    var num = _node.LinkedNodes[j];
+                    if (Nodes[nowLayer - 2][num].state == 3) {
                         IsExplore = true;
-                    else
-                        for (int j = 0; j < _node.LinkedNodes.Count; j++)
-                        {
-                            var num = _node.LinkedNodes[j];
-                            if (Nodes[nowLayer - 2][num].state == 3)
-                            {
-                                IsExplore = true;
-                                break;
-                            }
-                        }
-
-                    if (IsExplore)
-                    {
-                        _node.state = 2;
-                        Nodes[nowLayer - 1][i] = _node;
-                        if (NodeObjects[nowLayer-1][i].GetComponent<CircleCollider2D>() == null&&nowLayer!=layerNumber)
-                        {
-                            NodeObjects[nowLayer - 1][i].AddComponent<CircleCollider2D>();
-
-                        }
-                        else if(NodeObjects[nowLayer - 1][i].GetComponent<BoxCollider2D>() == null&&nowLayer == layerNumber)
-                        {
-                            NodeObjects[nowLayer - 1][i].AddComponent<BoxCollider2D>();
-
-                        }
-                        if (NodeObjects[nowLayer - 1][i].GetComponent<Node>() == null)
-                        {
-                            //Node _Node = new Node(nowLayer-1,i,Nodes[nowLayer][i].mark, Nodes[nowLayer][i].branch);
-                            NodeObjects[nowLayer-1][i].AddComponent<Node>();
-                            Node _Node = NodeObjects[nowLayer-1][i].GetComponent<Node>();
-                            _Node.InitNode(nowLayer - 1, i, Nodes[nowLayer-1][i].mark, Nodes[nowLayer-1][i].branch, this);
-                            
-                        }
-                        if (NodeObjects[nowLayer - 1][i].GetComponent<Animator>() == null)
-                        {
-                            NodeObjects[nowLayer - 1][i].AddComponent<Animator>();
-                            var animator = NodeObjects[nowLayer - 1][i].GetComponent<Animator>();
-                            if (elite.Contains(nowLayer - 1))
-                                animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/Elite");
-                            else if (layerNumber == nowLayer)
-                                animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/Boss");
-                            else
-                                animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/NormalNode");
-                        }
+                        break;
                     }
-
                 }
-                SaveNodeToJason.Save(Nodes, Filepath);
+            }
+
+            if (!IsExplore) continue;
+
+            _node.state = 2;
+            Nodes[nowLayer - 1][i] = _node;
+            if (NodeObjects[nowLayer - 1][i].GetComponent<CircleCollider2D>() == null && nowLayer != layerNumber) {
+                NodeObjects[nowLayer - 1][i].AddComponent<CircleCollider2D>();
+
+            }
+            else if (NodeObjects[nowLayer - 1][i].GetComponent<BoxCollider2D>() == null && nowLayer == layerNumber) {
+                NodeObjects[nowLayer - 1][i].AddComponent<BoxCollider2D>();
+
+            }
+            if (NodeObjects[nowLayer - 1][i].GetComponent<Node>() == null) {
+                //Node _Node = new Node(nowLayer-1,i,Nodes[nowLayer][i].mark, Nodes[nowLayer][i].branch);
+                NodeObjects[nowLayer - 1][i].AddComponent<Node>();
+                Node _Node = NodeObjects[nowLayer - 1][i].GetComponent<Node>();
+                _Node.InitNode(nowLayer - 1, i, Nodes[nowLayer - 1][i].mark, Nodes[nowLayer - 1][i].branch, this);
+
+            }
+            if (NodeObjects[nowLayer - 1][i].GetComponent<Animator>() == null) {
+                NodeObjects[nowLayer - 1][i].AddComponent<Animator>();
+                var animator = NodeObjects[nowLayer - 1][i].GetComponent<Animator>();
+                if (elite.Contains(nowLayer - 1))
+                    animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/Elite");
+                else if (layerNumber == nowLayer)
+                    animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/Boss");
+                else
+                    animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animation/NormalNode");
             }
             
         }
-
+        SaveNodeToJason.Save(Nodes, Filepath);
     }
+
     void CreateBossLayer(int i) {
         //Boss
         List<node> noderow = new List<node> { };
@@ -487,6 +381,7 @@ public class ExploreSystem : MonoBehaviour
                     if (random > 900 && random <= 1000)
                         _node.branch = 7;
                 }
+
 
                 _node.state = 1;
                 _node.position = new float[2];
@@ -719,8 +614,7 @@ public class ExploreSystem : MonoBehaviour
         //save();
     }
     //重载探索界面时，探索完成后的物体需播放动画
-    List<GameObject> LoadGameObject(List<GameObject>nodeRow,node _node)
-    {
+    List<GameObject> LoadGameObject(List<GameObject>nodeRow,node _node) {
         GameObject NodeObject;
         if (_node.mark == 1)
         {

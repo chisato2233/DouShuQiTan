@@ -2,10 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
+
+public static class MyFunc{
+    public static string GetText(int i) {
+        string digit = i.ToString();
+        string res = "";
+        foreach (var c in digit) {
+            res += $"<sprite={c}> ";
+        }
+
+        return res;
+    }
+}
 
 public class BeadPackage : MonoBehaviour
 {
     public Transform scroll;
+
+    public ChouJiang æŠ½å¥–System;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -18,14 +33,14 @@ public class BeadPackage : MonoBehaviour
 
                 var bead = scroll.GetChild(i);
                 bead.GetChild(1).GetComponent<TextMeshPro>().text
-                    = "<sprite=" + (GameData.ExtraGrade[i] + 1).ToString() + ">";
+                    = MyFunc.GetText(GameData.ExtraGrade[i]+1);
 
                 if (GameData.OnceUpGrade[i] != 0)
                     bead.GetChild(2).GetChild(0).GetComponent<TextMeshPro>().text
-                        = "Ã¿´ÎÉı¼¶¶îÍâ¼Ó" + GameData.OnceUpGrade[i].ToString() + "¼¶";
+                        = "æ¯æ¬¡å‡çº§é¢å¤–åŠ " + GameData.OnceUpGrade[i].ToString() + "çº§";
                 else
                     bead.GetChild(2).GetChild(0).GetComponent<TextMeshPro>().text
-                        = "ÎŞ¶îÍâÉı¼¶";
+                        = "æ— é¢å¤–å‡çº§";
 
             }
 
@@ -40,57 +55,56 @@ public class BeadPackage : MonoBehaviour
                     = "<sprite=1>";
 
                 bead.GetChild(2).GetChild(0).GetComponent<TextMeshPro>().text
-                        = "ÎŞ¶îÍâÉı¼¶";
+                        = "æ— é¢å¤–å‡çº§";
             }
         }
         if (GameData.ExtraRandom.Count>0)
             scroll.GetChild(16).GetChild(0).GetComponent<TextMeshPro>().text
-                = "*ÊàÔªÇ°Èı´ÎÉı¼¶½ø»¯³öÊôĞÔµÄ¸ÅÂÊ£º" + (20+GameData.ExtraRandom[0]*2).ToString() + "%";
+                = "*æ¢å…ƒå‰ä¸‰æ¬¡å‡çº§è¿›åŒ–å‡ºå±æ€§çš„æ¦‚ç‡ï¼š" + (20+GameData.ExtraRandom[0]*2).ToString() + "%";
         else
             scroll.GetChild(16).GetChild(0).GetComponent<TextMeshPro>().text
-                                = "*ÊàÔªÇ°Èı´ÎÉı¼¶½ø»¯³öÊôĞÔµÄ¸ÅÂÊ£º"  + "20%";
+                                = "*æ¢å…ƒå‰ä¸‰æ¬¡å‡çº§è¿›åŒ–å‡ºå±æ€§çš„æ¦‚ç‡ï¼š"  + "20%";
 
         if(GameData.ShuXingGaiLv.Count>0)
-        for(int i=0;i<4;i++)
-        {
-            scroll.GetChild(17 + i).GetChild(1).GetComponent<TextMeshPro>().text
-                = "½ø»¯³ö¸ÃÊôĞÔµÄ¸ÅÂÊ£º" + (GameData.ShuXingGaiLv[0][i+1]).ToString()+"%";
-
-        }
-        else
-        {
             for(int i=0;i<4;i++)
             {
                 scroll.GetChild(17 + i).GetChild(1).GetComponent<TextMeshPro>().text
-                = "½ø»¯³ö¸ÃÊôĞÔµÄ¸ÅÂÊ£º20%";
+                    = "è¿›åŒ–å‡ºè¯¥å±æ€§çš„æ¦‚ç‡ï¼š" + (GameData.ShuXingGaiLv[0][i+1]).ToString()+"%";
+
+            }
+        else {
+            for(int i=0;i<4;i++)
+            {
+                scroll.GetChild(17 + i).GetChild(1).GetComponent<TextMeshPro>().text
+                = "è¿›åŒ–å‡ºè¯¥å±æ€§çš„æ¦‚ç‡ï¼š20%";
             }
         }
         if (GameData.TuUp == 1)
         {
-            scroll.GetChild(17).GetChild(2).GetComponent<TextMeshPro>().text = "ÒÑÇ¿»¯";
+            scroll.GetChild(17).GetChild(2).GetComponent<TextMeshPro>().text = "å·²å¼ºåŒ–";
             scroll.GetChild(17).GetChild(3).GetComponent<TextMeshPro>().text
-                = "µ±ÆåÅÌÉÏÍ¬Ê±³öÏÖ3¿Å»ğÖ®ÊàÔªÊ±£¬½ÇÉ«»Ø¸´ÍÁÖ®ÊàÔª¡¾µÈ¼¶Ö®ºÍ*(1+0.25*n)¡¿µÄÑªÁ¿";
+                = "å½“æ£‹ç›˜ä¸ŠåŒæ—¶å‡ºç°3é¢—ç«ä¹‹æ¢å…ƒæ—¶ï¼Œè§’è‰²å›å¤åœŸä¹‹æ¢å…ƒã€ç­‰çº§ä¹‹å’Œ*(1+0.25*n)ã€‘çš„è¡€é‡";
             scroll.GetChild(21).gameObject.SetActive(true);
         }
         if(GameData.ShuiUp==1)
         {
-            scroll.GetChild(18).GetChild(2).GetComponent<TextMeshPro>().text = "ÒÑÇ¿»¯";
+            scroll.GetChild(18).GetChild(2).GetComponent<TextMeshPro>().text = "å·²å¼ºåŒ–";
             scroll.GetChild(18).GetChild(3).GetComponent<TextMeshPro>().text
-                = "ÆåÅÌÉÏÃ¿¿ÅË®Ö®ÊàÔª¶ÔËæ»úµĞ·½µ¥ÌåÔì³ÉµÈ¼¶*3(+0.25*n)µÄÉËº¦";
+                = "æ£‹ç›˜ä¸Šæ¯é¢—æ°´ä¹‹æ¢å…ƒå¯¹éšæœºæ•Œæ–¹å•ä½“é€ æˆç­‰çº§*3(+0.25*n)çš„ä¼¤å®³";
             scroll.GetChild(21).gameObject.SetActive(true);
         }
         if (GameData.HuoUp==1)
         {
-            scroll.GetChild(19).GetChild(2).GetComponent<TextMeshPro>().text = "ÒÑÇ¿»¯";
+            scroll.GetChild(19).GetChild(2).GetComponent<TextMeshPro>().text = "å·²å¼ºåŒ–";
             scroll.GetChild(19).GetChild(3).GetComponent<TextMeshPro>().text
-                = "Ã¿ÓĞÒ»¿Å»ğÖ®ÊàÔªÔÚÑµ½ëÖäÊõÖĞ£¬¸ÃÖäÊõ¶ÔµĞ·½ÉËº¦Ôö¼Ó25(+2.5%*n)%";
+                = "æ¯æœ‰ä¸€é¢—ç«ä¹‹æ¢å…ƒåœ¨è®­è¯«å’’æœ¯ä¸­ï¼Œè¯¥å’’æœ¯å¯¹æ•Œæ–¹ä¼¤å®³å¢åŠ 25(+2.5%*n)%";
             scroll.GetChild(21).gameObject.SetActive(true);
         }
         if (GameData.FengUp==1)
         {
-            scroll.GetChild(20).GetChild(2).GetComponent<TextMeshPro>().text = "ÒÑÇ¿»¯";
+            scroll.GetChild(20).GetChild(2).GetComponent<TextMeshPro>().text = "å·²å¼ºåŒ–";
             scroll.GetChild(20).GetChild(3).GetComponent<TextMeshPro>().text
-                = "Ã¿ÓĞÁ½¿Å·çÖ®ÊàÔªÔÚÆåÅÌÉÏ£¬Ëæ»ún¿ÅÊàÔªµÈ¼¶Ôö¼Ó2¼¶£¬ÆäÓàËùÓĞÊàÔªµÈ¼¶Ôö¼Ó1¼¶";
+                = "æ¯æœ‰ä¸¤é¢—é£ä¹‹æ¢å…ƒåœ¨æ£‹ç›˜ä¸Šï¼Œéšæœºné¢—æ¢å…ƒç­‰çº§å¢åŠ 2çº§ï¼Œå…¶ä½™æ‰€æœ‰æ¢å…ƒç­‰çº§å¢åŠ 1çº§";
             scroll.GetChild(21).gameObject.SetActive(true);
         }
 
@@ -98,9 +112,42 @@ public class BeadPackage : MonoBehaviour
 
 
     }
-    void Start()
-    {
-        
+
+    private void SelectShowå’’å°(int index) {
+        switch (index) {
+            case 0:
+                Findå’’å°å±•ç¤º("Shui");
+                break;
+            case 1:
+                Findå’’å°å±•ç¤º("Feng");
+                break;
+            case 2:
+                Findå’’å°å±•ç¤º("Huo");
+                break;
+            case 3:
+                Findå’’å°å±•ç¤º("Tu");
+                break;
+        }
+    }
+
+    private void Findå’’å°å±•ç¤º(string name) {
+        foreach (Transform trans in transform) {
+            if (trans.name == "GameObject") {
+                foreach (Transform tran in trans) {
+                    if (tran.name == name) {
+                        tran.gameObject.SetActive(true);
+                        goto end;
+                    }
+                }
+
+            }
+        }
+
+        end: return;
+    }
+
+    void Start() {
+        SelectShowå’’å°(GameData.å’’å°index);
     }
 
     // Update is called once per frame

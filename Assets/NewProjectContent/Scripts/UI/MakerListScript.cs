@@ -11,6 +11,7 @@ public class MakerListScript : MonoBehaviour {
         GetComponent<Image>().DOFade(168 / 255f, 0.5f);
         for (int i = 0; i < transform.childCount; i++) {
             transform.GetChild(i).GetComponent<TextMeshProUGUI>()?.DOFade(1, 0.5f);
+            transform.GetChild(i).GetComponent<Image>()?.DOFade(1, 0.5f);
         }
     }
 
@@ -18,6 +19,7 @@ public class MakerListScript : MonoBehaviour {
         GetComponent<Image>().DOFade(0, 0.5f).OnComplete(() => gameObject.SetActive(false));
         for (int i = 0; i < transform.childCount; i++) {
             transform.GetChild(i).GetComponent<TextMeshProUGUI>()?.DOFade(0, 0.5f);
+            transform.GetChild(i).GetComponent<Image>()?.DOFade(0, 0.5f);
         }
     }
 }

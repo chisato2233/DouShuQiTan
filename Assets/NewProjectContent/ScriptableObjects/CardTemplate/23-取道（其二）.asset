@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: e7eb78063cf4c40498e8359a323944b6, type: 3}
   m_Name: "23-\u53D6\u9053\uFF08\u5176\u4E8C\uFF09"
-  m_EditorClassIdentifier: Assembly-CSharp:DouShuQiTan:CardTemplate
+  m_EditorClassIdentifier: 
   Id: 23
   Name: "\u53D6\u9053\uFF08\u5176\u4E8C\uFF09"
   Type: "\u67A2\u5143"
@@ -20,5 +20,5 @@ MonoBehaviour:
   Describe: "\u68CB\u76D8\u4E0A\u6240\u6709\u67A2\u5143\u5347\u7EA7\u4E00\u6B21"
   UpgradeDescribe: "\u68CB\u76D8\u4E0A\u6240\u6709\u67A2\u5143\u5347\u7EA7\u4E24\u6B21"
   Comment: 
-  Material: {fileID: 0}
+  "Has\u9635\u578B": 0
   RuntimeCard: {fileID: 5532524760296808532, guid: c408344e5b6501f4bbc76a2179f75a0b, type: 3}

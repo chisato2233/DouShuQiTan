@@ -32,6 +32,8 @@ public class AudioManager : MonoBehaviour
         //{
         //    Destroy(gameObject);
         //}
+
+        Screen.SetResolution(1920, 1080,FullScreenMode.Windowed);
     }
     public void PlayMusic(string name) {
         if (musicSounds == null) return;

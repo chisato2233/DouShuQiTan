@@ -671,8 +671,7 @@ public class GameStart : MonoBehaviour {
             //Debug.Log(UsingQi.childCount);
             //Debug.Log(i);
             var b = UsingQi.GetChild(i);
-            if(b.GetComponent<Bead>().InZhenXing == true)
-            {
+            if (b.GetComponent<Bead>().InZhenXing) {
                 //Bead bead = new Bead();
                 //bead.attribute[0] = b.GetComponent<Bead>().attribute[0];
                 //bead.attribute[1] = b.GetComponent<Bead>().attribute[1];
@@ -689,6 +688,8 @@ public class GameStart : MonoBehaviour {
                 Destroy(b.gameObject);
                 usingBeadNum--;
             }
+            else
+                b.GetComponent<Bead>().Frezz();
         }
     }
 
@@ -997,7 +998,7 @@ public class GameStart : MonoBehaviour {
         if (!IsPrepared) {
             IsPrepared = true;
             stopTime = 0;
-            player.GetComponent<Player>().Defend = 0;
+            //player.GetComponent<Player>().Defend = 0;
             //enemy.GetComponent<Enemy>().Defend = 0;
             if (enemy.GetComponent<Enemy>().IsXieli > 0) {
                 enemy.GetComponent<Enemy>().IsXieli--;
@@ -1580,31 +1581,7 @@ public class GameStart : MonoBehaviour {
             wincard2.SetActive(false);
             wincard3.SetActive(false);
             //枢元强化
-            int d1, d2, d3;
-            d1 = UnityEngine.Random.Range(0, 17);
-            d2 = UnityEngine.Random.Range(0, 17);
-            d3 = UnityEngine.Random.Range(0, 17);
-            while (d2 == d1) {
-                d2 = UnityEngine.Random.Range(0, 17);
-            }
-            while (d3 == d1 || d3 == d2) {
-                d3 = UnityEngine.Random.Range(0, 17);
-            }
-            winQiang1 = Instantiate(ShuYuanQiangHua);
-            winQiang2 = Instantiate(ShuYuanQiangHua);
-            winQiang3 = Instantiate(ShuYuanQiangHua);
-            winQiang1.transform.position = new Vector3(0, 2.2f, 0);
-            winQiang2.transform.position = new Vector3(0, 0f, 0);
-            winQiang3.transform.position = new Vector3(0, -2.2f, 0);
-            winQiang1.GetComponent<winQiangHua>().Num = d1;
-            winQiang2.GetComponent<winQiangHua>().Num = d2;
-            winQiang3.GetComponent<winQiangHua>().Num = d3;
-            winQiang1.GetComponent<winQiangHua>().OnInit(this);
-            winQiang2.GetComponent<winQiangHua>().OnInit(this);
-            winQiang3.GetComponent<winQiangHua>().OnInit(this);
-            winQiang1.SetActive(false);
-            winQiang2.SetActive(false);
-            winQiang3.SetActive(false);
+            
             if (!act1) NotUseCardModel.Add(card1);
             if (!act2) NotUseCardModel.Add(card2);
             if (!act3) NotUseCardModel.Add(card3);
@@ -1697,26 +1674,56 @@ public class GameStart : MonoBehaviour {
             }
             else if (e < 6) {
                 //枢元
-                winQiang1.SetActive(true);
-                winQiang2.SetActive(true);
-                winQiang3.SetActive(true);
-                //var color = winQiang1.transform.GetChild(0).GetComponent<TextMeshPro>().color;
-                for (int i = 1; i < 8; i++) {
-                    winQiang1.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
-                    winQiang2.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
-                    winQiang3.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
-                    winQiang1.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
-                    winQiang2.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
-                    winQiang3.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
-                }
-                winChooseText.GetComponent<TextMeshPro>().text = "选择一种强化效果";
-                winChooseText.GetComponent<TextMeshPro>().DOFade(1, 0.5f);
+                Show枢元Upgrade();
             }
             skip.SetActive(true);
             skip.transform.GetChild(0).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
             skip.transform.GetChild(1).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
         }
     }
+
+    private void Show枢元Upgrade() {
+        int d1, d2, d3;
+        d1 = UnityEngine.Random.Range(0, 17);
+        d2 = UnityEngine.Random.Range(0, 17);
+        d3 = UnityEngine.Random.Range(0, 17);
+        while (d2 == d1) {
+            d2 = UnityEngine.Random.Range(0, 17);
+        }
+        while (d3 == d1 || d3 == d2) {
+            d3 = UnityEngine.Random.Range(0, 17);
+        }
+        winQiang1 = Instantiate(ShuYuanQiangHua);
+        winQiang2 = Instantiate(ShuYuanQiangHua);
+        winQiang3 = Instantiate(ShuYuanQiangHua);
+        winQiang1.transform.position = new Vector3(0, 2.2f, 0);
+        winQiang2.transform.position = new Vector3(0, 0f, 0);
+        winQiang3.transform.position = new Vector3(0, -2.2f, 0);
+        winQiang1.GetComponent<winQiangHua>().Num = d1;
+        winQiang2.GetComponent<winQiangHua>().Num = d2;
+        winQiang3.GetComponent<winQiangHua>().Num = d3;
+        winQiang1.GetComponent<winQiangHua>().OnInit(this);
+        winQiang2.GetComponent<winQiangHua>().OnInit(this);
+        winQiang3.GetComponent<winQiangHua>().OnInit(this);
+        winQiang1.SetActive(false);
+        winQiang2.SetActive(false);
+        winQiang3.SetActive(false);
+        winQiang1.SetActive(true);
+        winQiang2.SetActive(true);
+        winQiang3.SetActive(true);
+        //var color = winQiang1.transform.GetChild(0).GetComponent<TextMeshPro>().color;
+        for (int i = 1; i < 8; i++) {
+            winQiang1.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
+            winQiang2.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
+            winQiang3.transform.GetChild(i).GetComponent<TextMeshPro>().DOFade(1, 0.5f);
+            winQiang1.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
+            winQiang2.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
+            winQiang3.transform.GetChild(i).GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
+        }
+        winChooseText.GetComponent<TextMeshPro>().text = "选择一种强化效果";
+        winChooseText.GetComponent<TextMeshPro>().DOFade(1, 0.5f);
+    }
+    
     private void OnGameTurnEnemyTurn() {
         //bool clearDefend = false;
         if (!clearDefend) {
@@ -2041,9 +2048,8 @@ public class GameStart : MonoBehaviour {
 
         AudioManager.Instance.PlaySfx("InspireCard");
         if (card.cardType == CardType.Attact || card.cardType == CardType.YiShi || card.cardType == CardType.LuLi1||
-            card.cardType == CardType.LuLi2 || card.cardType == CardType.NiLv)
-        {
-            float actualValue = card.value*1000000;
+            card.cardType == CardType.LuLi2 || card.cardType == CardType.NiLv) {
+            float actualValue = card.value;
             if (player.GetComponent<Player>().IsXieli > 0)
             {
                 actualValue *= 0.8f;

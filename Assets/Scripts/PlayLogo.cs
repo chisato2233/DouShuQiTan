@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DouShuQiTan;
 using UnityEngine;
 
 public class PlayLogo : MonoBehaviour
@@ -10,9 +11,9 @@ public class PlayLogo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //×Ô¶¯²¥·Å2ÃëÌø×ª
+        //è‡ªåŠ¨æ’­æ”¾2ç§’è·³è½¬
         transitionManager = GameObject.Find("TransitionManager").GetComponent<EasyTransition.TransitionManager>();
-        sceneName = "Title";
+        sceneName = GameSceneName.TitleScene;
         transitionManager.LoadScene(sceneName, "SlowFade", 7f);
     }
 

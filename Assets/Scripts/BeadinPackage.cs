@@ -7,16 +7,16 @@ public class BeadinPackage : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     private void Awake()
     {
-        transform.GetChild(2).gameObject.SetActive(false);
+       
 
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.GetChild(2).gameObject.SetActive(true);
+       
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.GetChild(2).gameObject.SetActive(false);
+        
     }
 }

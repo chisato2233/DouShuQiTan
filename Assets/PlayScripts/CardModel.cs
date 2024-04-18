@@ -34,7 +34,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public bool IsUpGrade = false;
     public bool IsWinCard = false;
     //private GameObject[] allChild;
-    //ÅÆÃæÔ¤Éè
+    //ç‰Œé¢é¢„è®¾
     private GameObject m_BeadRed;
     private GameObject m_BeadBlue;
     private GameObject m_BeadYellow;
@@ -53,7 +53,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         m_BeadGreen = Resources.Load<GameObject>("Test/BeadImageGreen");
         m_BeadBlack = Resources.Load<GameObject>("Test/BeadImageBlack");
         m_EmptyQi = Resources.Load<GameObject>("Test/EmptyQiImage");
-        //Ëæ»úÕóĞÍ
+        //éšæœºé˜µå‹
         //ZhenXing = new List<int[]>();
         //if(QiShu == 4)
         //{
@@ -205,7 +205,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                             else
                             {
                                 onceValue += m_GameStart.usingBeads[i + ZhenXing[m][0], j + ZhenXing[m][1]].GetComponent<Bead>().grade;
-                                //»ğ1
+                                //ç«1
                                 if(!luliCard.Contains(m_GameStart.usingBeads[i + ZhenXing[m][0], j + ZhenXing[m][1]].GetComponent<Bead>().attribute[0]))
                                 {
                                     luliCard.Add(m_GameStart.usingBeads[i + ZhenXing[m][0], j + ZhenXing[m][1]].GetComponent<Bead>().attribute[0]);
@@ -260,7 +260,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                         for (int m = 0; m < ZhenXing.Count; m++)
                         {
                             m_GameStart.usingBeads[i + ZhenXing[m][0], j + ZhenXing[m][1]].GetComponent<Bead>().InZhenXing = true;
-                            //»ğ1
+                            //ç«1
                             //if (m_GameStart.usingBeads[i + ZhenXing[m][0], j + ZhenXing[m][1]].GetComponent<Bead>().attribute[0] == 3)
                             //{
                             //    HuoNum++;
@@ -289,12 +289,12 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         }
-        // ¼ÇÂ¼ÍÏ×§¿ªÊ¼Ê±µÄÎ»ÖÃºÍ¸¸¶ÔÏó
+        // è®°å½•æ‹–æ‹½å¼€å§‹æ—¶çš„ä½ç½®å’Œçˆ¶å¯¹è±¡
         startPosition = new Vector3(num * m_GameStart.interval, 0, 0) + m_GameStart.CardStart.position;
         startParent = transform.parent;
         transform.position = new Vector3(mainCamera.ScreenToWorldPoint(Input.mousePosition).x, mainCamera.ScreenToWorldPoint(Input.mousePosition).y, 0);
 
-        // ½«TileÉèÖÃÎª²ã¼¶×î¸ß£¬È·±£ÆäÎ»ÓÚÆäËûTileÉÏ·½
+        // å°†Tileè®¾ç½®ä¸ºå±‚çº§æœ€é«˜ï¼Œç¡®ä¿å…¶ä½äºå…¶ä»–Tileä¸Šæ–¹
         //transform.SetAsLastSibling();
         if (!IsUpSort)
         {
@@ -344,7 +344,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         CardModel cardModel = null;
         Vector3 endPosition = Vector3.zero;
         int targetNum = 0;
-        // ¼ì²éÊÇ·ñÓĞÓëÖ®½»»»Î»ÖÃµÄÄ¿±êTile
+        // æ£€æŸ¥æ˜¯å¦æœ‰ä¸ä¹‹äº¤æ¢ä½ç½®çš„ç›®æ ‡Tile
         GameObject targetObject = eventData.pointerCurrentRaycast.gameObject;
 
         while (targetObject != null && targetObject.GetComponent<CardModel>() == null)
@@ -359,8 +359,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             }
         }
 
-        if (targetObject != null && targetObject.GetComponent<CardModel>() != null)
-        {
+        if (targetObject != null && targetObject.GetComponent<CardModel>() != null) {
             startPosition = new Vector3(num * m_GameStart.interval, 0, 0) + m_GameStart.CardStart.position;
             cardModel = targetObject.GetComponent<CardModel>();
             endPosition = new Vector3(cardModel.num * m_GameStart.interval, 0, 0) + m_GameStart.CardStart.position;
@@ -372,8 +371,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             DG.Tweening.Sequence sequence2 = DOTween.Sequence();
             sequence1.Append(this.gameObject.transform.DOMove(endPosition, 0.3f).SetEase(Ease.OutExpo));
             sequence2.Append(cardModel.gameObject.transform.DOMove(startPosition, 0.3f).SetEase(Ease.OutExpo));
-            sequence1.InsertCallback(0.3f, () =>
-            {
+            sequence1.InsertCallback(0.3f, () => {
                 m_GameStart.DragCard = -1;
                 cardModel.num = this.num;
                 this.num = targetNum;
@@ -410,35 +408,26 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             });
 
         }
-        else
-        {
+        else {
             GetComponent<BoxCollider2D>().enabled = false;
             DG.Tweening.Sequence sequence = DOTween.Sequence();
             sequence.Append(this.gameObject.transform.DOMove(startPosition, 0.3f).SetEase(Ease.OutExpo));
             transform.SetParent(startParent);
-            sequence.InsertCallback(0.3f, () =>
-            {
+            sequence.InsertCallback(0.3f, () => {
                 GetComponent<BoxCollider2D>().enabled = true;
                 m_GameStart.DragCard = -1;
-                if (IsUpSort)
-                {
+                if (IsUpSort) {
                     GetComponent<SpriteRenderer>().sortingOrder -= 30;
-                    foreach (Transform child in this.transform)
-                    {
-                        if (child.GetComponent<SpriteRenderer>() != null)
-                        {
+                    foreach (Transform child in this.transform) {
+                        if (child.GetComponent<SpriteRenderer>() != null) {
                             child.GetComponent<SpriteRenderer>().sortingOrder -= 30;
                         }
-                        else if (child.GetComponent<SortingGroup>() != null)
-                        {
+                        else if (child.GetComponent<SortingGroup>() != null) {
                             child.GetComponent<SortingGroup>().sortingOrder -= 30;
                         }
-                        else
-                        {
-                            foreach (Transform child1 in child)
-                            {
-                                if (child1.GetComponent<SpriteRenderer>() != null)
-                                {
+                        else {
+                            foreach (Transform child1 in child) {
+                                if (child1.GetComponent<SpriteRenderer>() != null) {
                                     child1.GetComponent<SpriteRenderer>().sortingOrder -= 30;
                                 }
                             }
@@ -464,8 +453,7 @@ public class CardModel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
+    public void OnPointerEnter(PointerEventData eventData) {
         if (m_GameStart.gameTurn == GameTurn.win || m_GameStart.gameTurn == GameTurn.playerChoose) return;
         if (m_GameStart.DragCard != num && m_GameStart.DragCard != -1) return;
         //if (!IsUp)

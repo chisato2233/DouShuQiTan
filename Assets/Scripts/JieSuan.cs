@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using DouShuQiTan;
 
 public class JieSuan : MonoBehaviour
 {
@@ -19,10 +20,10 @@ public class JieSuan : MonoBehaviour
 
         if (!GameData.IsWin) {
             PlayerPrefs.SetInt("StopExplo", 0);
-            sceneName = "start";
+            sceneName = GameSceneName.StartScene;
         }
         else {
-            sceneName = "map";
+            sceneName =GameSceneName.MapScene;
             Load();
             if (GameData.Enemy[7] == 1)
                 ExploreSystem.IsNewExplo = true;

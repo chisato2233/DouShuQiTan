@@ -7,6 +7,7 @@ using System.IO;
 using System;
 using DG.Tweening;
 using System.Xml;
+using DouShuQiTan;
 
 public class startScene : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class startScene : MonoBehaviour
     void Awake() {
         Filepath = Application.dataPath + "/card.txt";
         Filepath_1 = Application.dataPath + "/bead.txt";
+        GameData.Init();
         transitionManager = GameObject.Find("TransitionManager").GetComponent<EasyTransition.TransitionManager>();
 
         StopExplo = PlayerPrefs.GetInt("StopExplo",0);
@@ -47,41 +49,31 @@ public class startScene : MonoBehaviour
             PlayerPrefs.DeleteKey("nowLayer");
         }
         ExploreSystem.nowLayer = 1;
-        GameData.HP = 50;
-        GameData.HoldCard.Clear();
-        GameData.IsUpGrade.Clear();
-        GameData.HasZhenXing.Clear();
-        GameData.ZhenXing.Clear();
-        GameData.ExtraGrade.Clear();
-        GameData.OnceUpGrade.Clear();
-        GameData.ExtraRandom.Clear();
-        GameData.ShuXingGaiLv.Clear();
-        GameData.TuUp = 0;
-        GameData.ShuiUp = 0;
-        GameData.HuoUp = 0;
-        GameData.FengUp = 0;
-        sceneName = "map";
+        GameData.Reset();
+        sceneName = GameSceneName.MapScene;
         transitionManager.LoadScene(sceneName, "SlowFade", 0f);
     }
 
     public void ContinueGame() {
         ExploreSystem.IsNewExplo = false;
-        if (PlayerPrefs.HasKey("nowLayer"))
-        {
+        if (PlayerPrefs.HasKey("nowLayer")) {
             ExploreSystem.nowLayer = PlayerPrefs.GetInt("nowLayer");
-
         }
-        if(PlayerPrefs.HasKey("HP"))
-        {
-            GameData.HP = PlayerPrefs.GetFloat("HP");
-        }
+        
         else ExploreSystem.nowLayer = 1;
 
         LoadFile();
         LoadFile_1();
-        sceneName = "map";
+        GameData.CardData.LoadCard();
+        GameData.Load();
+
+
+        sceneName = GameSceneName.MapScene; ;
         transitionManager.LoadScene(sceneName, "SlowFade", 0f);
     }
+
+
+
     void LoadFile() {
         //读档
         GameData.HoldCard.Clear();

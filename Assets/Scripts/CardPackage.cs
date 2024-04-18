@@ -13,13 +13,26 @@ public class CardPackage : MonoBehaviour
     public float DragSpeed;
     Vector2 startPosition;
     Vector2 EndPosition;
-
+    private Vector3 StandardScale = new Vector2(0.318f,0.335f);
+    private Vector2 StandardPositionOffset = new Vector2(-0.04f,0.328f);
+    private Vector2[] showPos = new Vector2[] {
+        new Vector2(3.5f, -0.88f),
+        new Vector2(-2.92f, -1.08f)
+    };
+    private Vector3 ShowScale = new Vector3(0.362f, 0.393f, 0.083f);
     public bool IsForgetRest=false;
     public bool IsForgetEvent=false;
     public bool IsUpGrade=false;
-    private void Awake()
-    {
-        cards.Clear();
+
+
+    private void FixPosition(Transform card,Transform slot) {
+        card.transform.localScale = StandardScale;
+        card.transform.position = slot.position + new Vector3(StandardPositionOffset.x,StandardPositionOffset.y,0);
+    }
+
+    private void Awake() {
+    
+    cards.Clear();
         for(int i=0;i<GameData.HoldCard.Count && GameData.HoldCard.Count<=16;i++)
         {
 
@@ -29,8 +42,7 @@ public class CardPackage : MonoBehaviour
                 card=Instantiate(card, transform.GetChild(1));
                 if (card.GetComponent<CardModel>() != null)
                     Destroy(card.GetComponent<CardModel>());
-                card.transform.localScale = card.transform.localScale * 1.1f;
-                card.transform.position = transform.GetChild(1).GetChild(i).position;
+                FixPosition(card.transform,transform.GetChild(1).GetChild(i));
                 if (card.GetComponent<CardinPackage>() == null)
                 {
                     card.AddComponent<CardinPackage>();
@@ -92,14 +104,14 @@ public class CardPackage : MonoBehaviour
             {
                 transform.GetChild(1).GetChild(i).gameObject.SetActive(false);
             }
-                int random = Random.Range(0, GameData.HoldCard.Count);
-                int num = Random.Range(0, GameData.HoldCard.Count);
+            int random = Random.Range(0, cards.Count);
+            int num = Random.Range(0, cards.Count);
             for (int i = 0; i < 2; i++)
             {
                 if (i == 1)
                 {
                     while (random == num)
-                        num = Random.Range(0, GameData.HoldCard.Count);
+                        num = Random.Range(0, cards.Count);
                     random = num;
                 }
                 GameData.HoldCard[random] = Random.Range(0, 29);
@@ -108,13 +120,10 @@ public class CardPackage : MonoBehaviour
                 //被换掉的卡牌
                 var ChangedCard = cards[random];
                 DG.Tweening.Sequence sequence = DOTween.Sequence();
-                Vector3 startScale = ChangedCard.transform.localScale;
+
                 ChangedCard.SetActive(true);
-                if(i==0)
-                    ChangedCard.transform.position = transform.GetChild(1).GetChild(1).position;
-                else
-                    ChangedCard.transform.position = transform.GetChild(1).GetChild(2).position;
-                sequence.Append(ChangedCard.transform.DOScale(startScale, 1f));
+                ChangedCard.transform.position = showPos[i];
+                sequence.Append(ChangedCard.transform.DOScale(ShowScale, 1f));
                 sequence.Append(ChangedCard.transform.DOScale(0, 0.5f));
 
                 //新卡
@@ -124,11 +133,10 @@ public class CardPackage : MonoBehaviour
                     Newcard = Instantiate(Newcard, transform.GetChild(1));
                     if (Newcard.GetComponent<CardModel>() != null)
                         Destroy(Newcard.GetComponent<CardModel>());
-                    Vector3 endscale = Newcard.transform.localScale * 1.1f;
+
                     Newcard.transform.localScale = Vector3.zero;
                     Newcard.transform.position = ChangedCard.transform.position;
-                    sequence.Append(Newcard.transform.DOScale(endscale, 0.5f));
-                    sequence.Append(Newcard.transform.DOScale(endscale, 1f));
+                    sequence.Append(Newcard.transform.DOScale(ShowScale, 0.5f));
                     if (Newcard.GetComponent<CardinPackage>() == null)
                     {
                         Newcard.AddComponent<CardinPackage>();
@@ -163,7 +171,7 @@ public class CardPackage : MonoBehaviour
         }
         for(int i=0;i<cards.Count;i++)
         {
-            cards[i].transform.position= transform.GetChild(1).GetChild(i).position;
+            FixPosition(cards[i].transform, transform.GetChild(1).GetChild(i));
         }
 
         GetComponent<PackageScroll>().enabled = true;

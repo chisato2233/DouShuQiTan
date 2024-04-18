@@ -10,15 +10,13 @@ public class winQiangHua : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public GameObject ZiDi;
     private GameStart m_game;
 
-    public void OnInit(GameStart game)
+    public void OnInit(GameStart game)  
     {
         m_game = game;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        switch (Num)
-        {
+    public void OnPointerClick(PointerEventData eventData) {
+        switch (Num) {
             case 0:
                 List<int> suiji = new List<int>();
                 while (suiji.Count < 4)
@@ -203,88 +201,88 @@ public class winQiangHua : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             case 0:
                 this.transform.GetChild(6).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Öş»ù";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú4¿ÅÊàÔªµÄ³õÊ¼µÈ¼¶ÌáÉı1¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ç­‘åŸº";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº4é¢—æ¢å…ƒçš„åˆå§‹ç­‰çº§æå‡1çº§";
                 break;
             case 1:
                 this.transform.GetChild(6).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Öş»ù";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú2¿ÅÊàÔªµÄ³õÊ¼µÈ¼¶ÌáÉı2¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ç­‘åŸº";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº2é¢—æ¢å…ƒçš„åˆå§‹ç­‰çº§æå‡2çº§";
                 break;
             case 2:
                 this.transform.GetChild(6).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Öş»ù";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú1¿ÅÊàÔªµÄ³õÊ¼µÈ¼¶ÌáÉı3¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ç­‘åŸº";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº1é¢—æ¢å…ƒçš„åˆå§‹ç­‰çº§æå‡3çº§";
                 break;
             case 3:
                 this.transform.GetChild(4).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "²ÎÎò";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ç¿»¯·çÖ®ÊàÔªµÄÊôĞÔĞ§¹û";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "å‚æ‚Ÿ";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "å¼ºåŒ–é£ä¹‹æ¢å…ƒçš„å±æ€§æ•ˆæœ";
                 break;
             case 4:
                 this.transform.GetChild(7).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "·ÉÉı";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú4¿ÅÊàÔªÔÚÓÎÏ·ÖĞÃ¿´ÎÉı¼¶¶îÍâ¼Ó1¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "é£å‡";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº4é¢—æ¢å…ƒåœ¨æ¸¸æˆä¸­æ¯æ¬¡å‡çº§é¢å¤–åŠ 1çº§";
                 break;
             case 5:
                 this.transform.GetChild(7).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "·ÉÉı";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú2¿ÅÊàÔªÔÚÓÎÏ·ÖĞÃ¿´ÎÉı¼¶¶îÍâ¼Ó2¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "é£å‡";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº2é¢—æ¢å…ƒåœ¨æ¸¸æˆä¸­æ¯æ¬¡å‡çº§é¢å¤–åŠ 2çº§";
                 break;
             case 6:
                 this.transform.GetChild(7).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "·ÉÉı";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ê¹Ëæ»ú1¿ÅÊàÔªÔÚÓÎÏ·ÖĞÃ¿´ÎÉı¼¶¶îÍâ¼Ó3¼¶";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "é£å‡";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ä½¿éšæœº1é¢—æ¢å…ƒåœ¨æ¸¸æˆä¸­æ¯æ¬¡å‡çº§é¢å¤–åŠ 3çº§";
                 break;
             case 7:
                 this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÕÆ¾Ö";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉı½ø»¯Îª»ğÖ®ÊàÔªµÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æŒå±€";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡è¿›åŒ–ä¸ºç«ä¹‹æ¢å…ƒçš„æ¦‚ç‡";
                 break;
             case 8:
                 this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÕÆ¾Ö";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉı½ø»¯ÎªË®Ö®ÊàÔªµÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æŒå±€";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡è¿›åŒ–ä¸ºæ°´ä¹‹æ¢å…ƒçš„æ¦‚ç‡";
                 break;
             case 9:
                 this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÕÆ¾Ö";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉı½ø»¯ÎªÍÁÖ®ÊàÔªµÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æŒå±€";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡è¿›åŒ–ä¸ºåœŸä¹‹æ¢å…ƒçš„æ¦‚ç‡";
                 break;
             case 10:
                 this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÕÆ¾Ö";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉı½ø»¯Îª·çÖ®ÊàÔªµÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æŒå±€";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡è¿›åŒ–ä¸ºé£ä¹‹æ¢å…ƒçš„æ¦‚ç‡";
                 break;
             case 11:
                 this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÕÆ¾Ö";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉı½ø»¯Îª¿ÕÖ®ÊàÔªµÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æŒå±€";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡è¿›åŒ–ä¸ºç©ºä¹‹æ¢å…ƒçš„æ¦‚ç‡";
                 break;
             case 12:
                 this.transform.GetChild(5).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "ÆøÔË";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "ÌáÉıÇ°Èı´ÎÉı¼¶ÊàÔª·¢Éú½ø»¯µÄ¸ÅÂÊ";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "æ°”è¿";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "æå‡å‰ä¸‰æ¬¡å‡çº§æ¢å…ƒå‘ç”Ÿè¿›åŒ–çš„æ¦‚ç‡";
                 break;
             case 13:
                 this.transform.GetChild(4).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "²ÎÎò";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ç¿»¯»ğÖ®ÊàÔªµÄÊôĞÔĞ§¹û";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "å‚æ‚Ÿ";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "å¼ºåŒ–ç«ä¹‹æ¢å…ƒçš„å±æ€§æ•ˆæœ";
                 break;
             case 14:
                 this.transform.GetChild(4).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "²ÎÎò";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ç¿»¯Ë®Ö®ÊàÔªµÄÊôĞÔĞ§¹û";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "å‚æ‚Ÿ";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "å¼ºåŒ–æ°´ä¹‹æ¢å…ƒçš„å±æ€§æ•ˆæœ";
                 break;
             case 15:
                 this.transform.GetChild(4).gameObject.SetActive(true);
-                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "²ÎÎò";
-                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ç¿»¯ÍÁÖ®ÊàÔªµÄÊôĞÔĞ§¹û";
+                this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "å‚æ‚Ÿ";
+                this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "å¼ºåŒ–åœŸä¹‹æ¢å…ƒçš„å±æ€§æ•ˆæœ";
                 break;
             //case 16:
             //    this.transform.GetChild(4).gameObject.SetActive(true);
-            //    this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "²ÎÎò";
-            //    this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "Ç¿»¯·çÖ®ÊàÔªµÄÊôĞÔĞ§¹û";
+            //    this.transform.GetChild(0).GetComponent<TextMeshPro>().text = "å‚æ‚Ÿ";
+            //    this.transform.GetChild(1).GetComponent<TextMeshPro>().text = "å¼ºåŒ–é£ä¹‹æ¢å…ƒçš„å±æ€§æ•ˆæœ";
             //    break;
         }
     }

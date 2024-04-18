@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -35,6 +36,7 @@ public class Bead : MonoBehaviour,
     public bool IsUse;//是否正在放置
     public bool InZhenXing = false;
     public bool onTheTop = false;
+    public bool EnableMove = true; //是否可以移动
 
     //属性图
     public GameObject TuDi, ShuiDi, HuoDi, FengDi, TuDing, ShuiDing, HuoDing, FengDing;
@@ -80,8 +82,7 @@ public class Bead : MonoBehaviour,
 }
 
 // Update is called once per frame
-void Update()
-    {
+    void Update() {
         if (!m_game.showNeedUse)
         {
             tm = 0;
@@ -124,11 +125,8 @@ void Update()
         ShuXing();
         grade = grade0 + plusGrade;
         gradeText.GetComponent<TextMeshPro>().text = null;
-        string gradetxt = grade.ToString();
-        for(int i = 0;i<gradetxt.Length;i++)
-        {
-            gradeText.GetComponent<TextMeshPro>().text += "<sprite=" + gradetxt[i] + ">";
-        }
+        gradeText.GetComponent<TextMeshPro>().text += MyFunc.GetText(grade);
+
         int needtxt = grade0 - useNum;
         if (needtxt > 3 - useNum)
         {
@@ -138,7 +136,13 @@ void Update()
 
     }
     //消耗完回到珠串里切换属性和显示面，升级随机赋属性
-
+    public void Frezz() {
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>()) {
+            sr.DOFade(0.4f, 0.5f);
+        }
+        GetComponent<SpriteRenderer>().DOFade(0.4f, 0.5f);
+        EnableMove = false;
+    }
     public void UpGrade()
     {
         if (grade0 == 2)
@@ -314,13 +318,12 @@ void Update()
         //    gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
+    public void OnPointerDown(PointerEventData eventData) {
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
+    public void OnPointerClick(PointerEventData eventData) {
         if (m_game.gameTurn == GameTurn.win) return;
+        if (!EnableMove) return;
         if(m_game.chooseType != ChooseType.No) {
             switch(m_game.chooseType)
             {

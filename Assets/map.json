@@ -2,155 +2,217 @@
   [
     {
       "mark": 1,
-      "branch": 1,
-      "position": [
-        -3.17376137,
-        -3.88903284
-      ],
-      "state": 3,
-      "LinkedNodes": []
-    },
-    {
-      "mark": 1,
       "branch": 2,
       "position": [
-        -1.25929546,
-        -4.01550627
-      ],
-      "state": 1,
-      "LinkedNodes": []
-    }
-  ],
-  [
-    {
-      "mark": 1,
-      "branch": 2,
-      "position": [
-        -3.769576,
-        -1.62345421
+        -2.01818728,
+        -3.916152
       ],
       "state": 2,
+      "LinkedNodes": []
+    },
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        0.166107446,
+        -4.12239552
+      ],
+      "state": 2,
+      "LinkedNodes": []
+    },
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        3.57699943,
+        -4.06656551
+      ],
+      "state": 2,
+      "LinkedNodes": []
+    }
+  ],
+  [
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -4.29216766,
+        -1.66422439
+      ],
+      "state": 1,
       "LinkedNodes": [
-        0,
-        1
+        0
       ]
     },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        -0.991110861,
+        -1.60317445
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        3.97335458,
+        -1.52346075
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        2
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        5.90213633,
+        -1.65530777
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        2
+      ]
+    }
+  ],
+  [
     {
       "mark": 3,
-      "branch": 4,
+      "branch": 5,
       "position": [
-        0.0144985318,
-        -1.68400359
+        -4.969125,
+        0.938489556
       ],
       "state": 1,
       "LinkedNodes": [
-        1
+        0
       ]
-    }
-  ],
-  [
+    },
     {
       "mark": 1,
-      "branch": 2,
+      "branch": 1,
       "position": [
-        -3.94344282,
-        0.6443725
+        0.8409873,
+        0.875002444
       ],
       "state": 1,
       "LinkedNodes": [
         0,
-        1
-      ]
-    }
-  ],
-  [
-    {
-      "mark": 1,
-      "branch": 2,
-      "position": [
-        -4.693757,
-        3.09382057
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    },
-    {
-      "mark": 1,
-      "branch": 2,
-      "position": [
-        -0.300293028,
-        3.25773144
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    },
-    {
-      "mark": 3,
-      "branch": 6,
-      "position": [
-        1.76634324,
-        3.38754
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    },
-    {
-      "mark": 1,
-      "branch": 2,
-      "position": [
-        6.70508146,
-        3.304034
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    }
-  ],
-  [
-    {
-      "mark": 2,
-      "branch": 0,
-      "position": [
-        -3.17531776,
-        5.721748
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0,
-        1
-      ]
-    },
-    {
-      "mark": 2,
-      "branch": 0,
-      "position": [
-        0.983752549,
-        5.52687025
-      ],
-      "state": 1,
-      "LinkedNodes": [
         1,
         2,
         3
       ]
     },
     {
-      "mark": 3,
-      "branch": 5,
+      "mark": 1,
+      "branch": 2,
       "position": [
-        2.888407,
-        5.59681559
+        3.07276344,
+        0.88027966
       ],
       "state": 1,
       "LinkedNodes": [
         3
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        5.76530743,
+        0.8563665
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 3,
+      "branch": 5,
+      "position": [
+        -3.65168142,
+        3.097093
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        0.0236333013,
+        3.373397
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "mark": 3,
+      "branch": 7,
+      "position": [
+        -2.43930268,
+        5.47986
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0,
+        1
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 1,
+      "position": [
+        -0.188682616,
+        5.791979
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1
+      ]
+    },
+    {
+      "mark": 1,
+      "branch": 2,
+      "position": [
+        3.19074416,
+        5.48957157
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1
+      ]
+    },
+    {
+      "mark": 3,
+      "branch": 6,
+      "position": [
+        6.85518265,
+        5.747016
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        1
       ]
     }
   ],
@@ -166,17 +228,30 @@
       "LinkedNodes": [
         0,
         1,
-        2
+        2,
+        3
       ]
     }
   ],
   [
+    {
+      "mark": 2,
+      "branch": 0,
+      "position": [
+        -4.14948654,
+        10.2425051
+      ],
+      "state": 1,
+      "LinkedNodes": [
+        0
+      ]
+    },
     {
       "mark": 1,
       "branch": 2,
       "position": [
-        -4.01313972,
-        10.22467
+        0.641854048,
+        10.4196339
       ],
       "state": 1,
       "LinkedNodes": [
@@ -185,34 +260,10 @@
     },
     {
       "mark": 3,
-      "branch": 6,
+      "branch": 7,
       "position": [
-        0.268405974,
-        10.288662
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    },
-    {
-      "mark": 3,
-      "branch": 4,
-      "position": [
-        2.60745,
-        10.40606
-      ],
-      "state": 1,
-      "LinkedNodes": [
-        0
-      ]
-    },
-    {
-      "mark": 3,
-      "branch": 4,
-      "position": [
-        6.68890429,
-        10.4750061
+        3.450904,
+        10.4559364
       ],
       "state": 1,
       "LinkedNodes": [
@@ -222,11 +273,11 @@
   ],
   [
     {
-      "mark": 1,
-      "branch": 1,
+      "mark": 3,
+      "branch": 4,
       "position": [
-        -3.19954348,
-        12.8628979
+        -2.09012914,
+        12.8887005
       ],
       "state": 1,
       "LinkedNodes": [
@@ -236,67 +287,42 @@
     },
     {
       "mark": 1,
-      "branch": 2,
+      "branch": 1,
       "position": [
-        0.829343259,
-        12.9322338
+        0.5551748,
+        12.8149958
       ],
       "state": 1,
       "LinkedNodes": [
         1,
-        2,
-        3
+        2
       ]
     },
     {
       "mark": 2,
       "branch": 0,
       "position": [
-        3.49523473,
-        12.7672644
+        3.467109,
+        12.6182957
       ],
       "state": 1,
       "LinkedNodes": [
-        3
+        2
       ]
     }
   ],
   [
     {
       "mark": 1,
-      "branch": 1,
+      "branch": 2,
       "position": [
-        -3.405642,
-        15.20588
+        -4.952933,
+        15.2830811
       ],
       "state": 1,
       "LinkedNodes": [
         0,
-        1
-      ]
-    },
-    {
-      "mark": 1,
-      "branch": 1,
-      "position": [
-        -1.02967536,
-        15.2495022
-      ],
-      "state": 1,
-      "LinkedNodes": [
         1,
-        2
-      ]
-    },
-    {
-      "mark": 1,
-      "branch": 2,
-      "position": [
-        3.07293367,
-        15.149682
-      ],
-      "state": 1,
-      "LinkedNodes": [
         2
       ]
     }
@@ -311,9 +337,7 @@
       ],
       "state": 1,
       "LinkedNodes": [
-        0,
-        1,
-        2
+        0
       ]
     }
   ]

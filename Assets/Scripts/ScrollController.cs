@@ -1,105 +1,99 @@
-using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
-
-public class ScrollController : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDragHandler
-{
-    public float ScrollSpeed;
-    public float DragSpeed;
-    private bool IsScroll=false;
-    private bool IsDrag=false;
+public class ScrollController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IScrollHandler {
+    [SerializeField]
+    private float scrollSpeed = 500f;
+    [SerializeField]
+    private float dragSpeed = 100f;
+    [SerializeField]
     private ExploreSystem exploreSystem;
-    private List<List<node>> Nodes=new List<List<node>> { };
-    public List<List<GameObject>> NodeObjects=new List<List<GameObject>> { };
-    Vector2 startPosition;
-    Vector2 EndPosition;
+    [SerializeField]
+    private GameObject Sider;
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        startPosition= Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    [SerializeField] private float ShowMapTime = 1.0f;
+
+    private Vector2 startPosition;
+    private Vector2 endPosition;
+    private bool isDragging;
+
+    public  bool Enable = false;
+
+    private void Awake() {
+        if (!exploreSystem) {
+            exploreSystem = GameObject.Find("ExploreSystem").GetComponent<ExploreSystem>();
+        }
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        EndPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 move = EndPosition - startPosition;
-        Vector2 position = transform.position;
-        startPosition = EndPosition;
-        if (position.y >= -10 && position.y <= 10)
-        {
-            IsDrag = true;
-            position += new Vector2(0, move.y * Time.deltaTime * DragSpeed);//一定要记得乘以每帧的时间，相当于每帧移动Speed个速度
-            if (position.y > 10)
-                position = new Vector2(position.x, 10);
-            if (position.y < -10)
-                position = new Vector2(position.x, -10);
-            transform.position = position;
-        }
+    public void Start() {
         
     }
 
-    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
-    {
-        IsDrag = false;
+    private void Update() {
+      
     }
-    private void Awake()
-    {
-        exploreSystem = GameObject.Find("ExploreSystem").GetComponent<ExploreSystem>();
+    public void ShowMap() {
+        var endPosition = transform.position;
+        endPosition.y = 10;
+        
+        transform.DOMove(endPosition, ShowMapTime).OnUpdate(UpdateLines)
+            .OnComplete(() => {
+                Enable = true;
+                StartCoroutine(Sider.GetComponent<TuLi>().AutoShow());
+            });
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
+    public void OnBeginDrag(PointerEventData eventData) {
+        startPosition = Camera.main.ScreenToWorldPoint(eventData.position);
+        isDragging = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            Vector2 position = transform.position;
-            if (position.y >= -10 && position.y <= 10)
-            {
-                IsScroll = true;
-                position -= Input.mouseScrollDelta * Time.deltaTime * ScrollSpeed;
-                if (position.y > 10)
-                    position = new Vector2(position.x, 10);
-                if (position.y < -10)
-                    position = new Vector2(position.x, -10);
-                transform.position = position;
-            }
+    public void OnDrag(PointerEventData eventData) {
+        if (!Enable) return;
+        
+        endPosition = Camera.main.ScreenToWorldPoint(eventData.position);
+        Vector2 move = endPosition - startPosition;
+        Vector2 position = transform.position;
+        startPosition = endPosition;
+        float newYPosition = Mathf.Clamp(position.y + move.y * Time.deltaTime * dragSpeed, -10f, 10f);
+        transform.position = new Vector2(position.x, newYPosition);
+        UpdateLines();
+    }
 
-        }
-        else
-            IsScroll = false;
-        if(IsScroll||IsDrag)
-        {
-            Nodes = exploreSystem.Nodes;
-            NodeObjects = exploreSystem.NodeObjects;
-            for (int i=1;i<Nodes.Count;i++)
-            {
-                for(int j=0;j<Nodes[i].Count;j++)
-                {
-                    node _node = Nodes[i][j];
-                    for(int t=0;t<_node.LinkedNodes.Count;t++) {
-                        var num = _node.LinkedNodes[t];
-                        var line=GameObject.Find($"line_{i}_{j}_{num}");
-                        if (line != null)
-                        {    
-                            LineRenderer linerenderer = line.GetComponent<LineRenderer>();
+    public void OnEndDrag(PointerEventData eventData) {
+        isDragging = false;
+    }
 
-                            linerenderer.SetPositions(
-                                new Vector3[]
-                                { new Vector3(NodeObjects[i-1][num].transform.position.x,NodeObjects[i-1][num].transform.position.y,0),
-                                new Vector3(NodeObjects[i][j].transform.position.x,NodeObjects[i][j].transform.position.y,0) });
-                        }
+    public  void UpdateLines() {
+        List<List<node>> nodes = exploreSystem.Nodes;
+        List<List<GameObject>> nodeObjects = exploreSystem.NodeObjects;
 
+        for (int i = 1; i < nodes.Count; i++) {
+            for (int j = 0; j < nodes[i].Count; j++) {
+                node node = nodes[i][j];
+                foreach (var num in node.LinkedNodes) {
+                    GameObject line = GameObject.Find($"line_{i}_{j}_{num}");
+                    if (line) {
+                        LineRenderer lineRenderer = line.GetComponent<LineRenderer>();
+                        lineRenderer.SetPositions(new Vector3[]
+                        {
+                            new Vector3(nodeObjects[i-1][num].transform.position.x, nodeObjects[i-1][num].transform.position.y, 0),
+                            new Vector3(nodeObjects[i][j].transform.position.x, nodeObjects[i][j].transform.position.y, 0)
+                        });
                     }
                 }
             }
         }
     }
-    
+
+    public void OnScroll(PointerEventData eventData) {
+        if (!Enable) return;
+        Vector2 position = transform.position;
+        float newYPosition = Mathf.Clamp(position.y - eventData.scrollDelta.y * Time.deltaTime * scrollSpeed, -10f, 10f);
+        transform.position = new Vector2(position.x, newYPosition);
+        isDragging = true;
+        UpdateLines();
+    }
 }

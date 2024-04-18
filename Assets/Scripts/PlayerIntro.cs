@@ -2,30 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using DouShuQiTan;
+
+
 
 public class PlayerIntro : MonoBehaviour
 {
     public EasyTransition.TransitionManager transitionManager;
     public string sceneName;
     public GameObject Package;
+
+    public CardLibrary library;
     //public static bool IsWin=false;    
     //存档位置
     //string Filepath = "D:" + "/card.txt";
     string Filepath;
     string Filepath_1;
+    
     private void Awake()
     {
         Filepath = Application.dataPath + "/card.txt";
         Filepath_1 = Application.dataPath + "/bead.txt";
+       
     }
     void Start()
     {
         transitionManager = GameObject.Find("TransitionManager").GetComponent<EasyTransition.TransitionManager>();
+ 
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
     public void Click1()
@@ -35,21 +42,33 @@ public class PlayerIntro : MonoBehaviour
     //标题
     public void title()
     {
-        transitionManager.LoadScene(sceneName, "SlowFade", 0f);
-
+        transitionManager.LoadScene(GameSceneName.StartScene, "SlowFade", 0f);
     }
 
-    //返回主界面
-    public void Return()
-    {
+    public void SaveGame() {
         save();
         save_1();
+
+        //
+        GameData.CardData.SaveCard();
+        //
+
         PlayerPrefs.SetFloat("HP", GameData.HP);
-        AudioManager.Instance.musicSource.Stop();
-        sceneName = "start";
+    }
+    //返回主界面
+    public void Return() {
+        SaveGame();
+        AudioManager.Instance?.musicSource?.Stop();
+        sceneName = GameSceneName.StartScene;
         transitionManager.LoadScene(sceneName, "RectangleGrid", 0.2f);
         
     }
+
+    void OnApplicationQuit() {
+        SaveGame();
+    }
+    
+
     void save()
     {
         //存档
@@ -133,6 +152,8 @@ public class PlayerIntro : MonoBehaviour
             beadsFile[GameData.ExtraGrade.Count + 2] = bead;
             File.WriteAllLines(Filepath_1, beadsFile);
         }
+
+        GameData.Save();
     }
     //不返回开始界面，关闭弹窗
     public void DontExit()
@@ -168,6 +189,6 @@ public class PlayerIntro : MonoBehaviour
     {
         var JuQing = GameObject.Find("JuQing");
         if (JuQing != null)
-            JuQing.GetComponent<Animator>().Play("Appear");
+            JuQing.GetComponent<UI_StoryControl>().ShowStory();
     }
 }
