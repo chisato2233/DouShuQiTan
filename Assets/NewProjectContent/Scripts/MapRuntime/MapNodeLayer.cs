@@ -13,25 +13,29 @@ using Random = UnityEngine.Random;
 
 public class MapNodeLayer : MonoBehaviour {
     
-    protected List<GameObject> AvailableNodes = new List<GameObject>();
-    public Vector2 Unit = new Vector2(200, 1);
-    
-
+    protected List<(GameObject,int)> AvailableNodes = new List<(GameObject,int)>();
+    protected List<GameObject> NodeGrides = new List<GameObject>();
     public List<GameObject> NodeList = new List<GameObject>();
+
     public MapNodeLibrary Library;
+
+    void Awake() {
+        for (int i = 0; i < transform.childCount; i++) {
+            NodeGrides.Add(transform.GetChild(i).gameObject);
+        }
+    }
+    
     public virtual void Generate() { }
 
+
+
+
     public void InstantiateMapNode() {
-        foreach (var node in AvailableNodes) {
+        
+        foreach (var (node,index) in AvailableNodes) {
             Vector2 Pos = new Vector2();
-            int cnt = 0;
-            do {
-                Pos = GetNewPosition(node);
-                cnt++;
-            } while (CheckOverlap(node,Pos) && cnt<50);
-            
-            var obj = Instantiate(node, transform);
-            obj.GetComponent<RectTransform>().anchoredPosition = Pos;
+            Pos = GetNewPosition(node);
+            var obj = Instantiate(node, NodeGrides[index].transform);
             NodeList.Add(obj);
         }
     }
