@@ -82,24 +82,26 @@ public class MapNodeLayer : MonoBehaviour {
 
 
     Vector2 GetNewPosition(GameObject node) {
-        RectTransform currentRect = GetComponent<RectTransform>();
+        RectTransform currentRect = transform.parent.GetComponent<RectTransform>();
         RectTransform nodeRect = node.GetComponent<RectTransform>();
 
         // 计算x坐标的最小值和最大值
-        float halfNodeWidth = nodeRect.sizeDelta.x / 2;
-        float minX = currentRect.sizeDelta.x + halfNodeWidth;
-        float maxX = currentRect.sizeDelta.x - halfNodeWidth;
+        float halfNodeWidth = (nodeRect.sizeDelta.x / 2) * node.transform.localScale.x;
+        float minX = -currentRect.sizeDelta.x/2 + halfNodeWidth;
+        float maxX = currentRect.sizeDelta.x/2 - halfNodeWidth;
 
         return new Vector2(Random.Range(minX, maxX), Random.Range(-1f, 1f));
     }
 
     bool CheckOverlap(GameObject node,Vector2 pos) {
         
-        var TargetRect = node.GetComponent<RectTransform>().rect;
+        var TargetRect = FixRect(node.GetComponent<RectTransform>());
         TargetRect.position = pos;
         foreach (var exisitNode in NodeList) {
-            
-            var ExistRect = exisitNode.GetComponent<RectTransform>().rect;
+
+            var ExistRect = FixRect(exisitNode.GetComponent<RectTransform>());
+            ExistRect.width *= exisitNode.transform.localScale.x;
+
             if (TargetRect.Overlaps(ExistRect)) {
                 return true;
             }
@@ -108,6 +110,12 @@ public class MapNodeLayer : MonoBehaviour {
         return false;
     }
 
+    Rect FixRect(RectTransform rectTrans) {
+        var rect= rectTrans.rect;
+        rect.width *= rectTrans.transform.localScale.x;
+        rect.height *= rectTrans.transform.localScale.y;
+        return rect;
+    }
 
 
 
