@@ -9,11 +9,19 @@ using UnityEngine.UI;
 
 public class UI_咒印Toogle : MonoBehaviour ,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler {
     [SerializeField]
-    private int Index = 0;
+    private string Name = "";
     
     private Image[] image;
     public ChouJiang 抽奖System;
     public bool enable = false;
+
+    public void Enable() {
+        enable = true;
+    }
+
+    public void Disable() {
+        enable = false;
+    }
 
     public void Awake() {
         image = GetComponents<Image>();
@@ -39,7 +47,9 @@ public class UI_咒印Toogle : MonoBehaviour ,IPointerEnterHandler,IPointerExitH
 
     public void OnPointerClick(PointerEventData eventData) {
         if (!enable) return;
-        抽奖System.PlayerChoose = Index;
-        
+        抽奖System.PlayerChoose = Name;
+        foreach (var i in image) {
+            i.DOFade(1.0f, 0.3f);
+        }
     }
 }

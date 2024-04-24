@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using DouShuQiTan;
-
+using UnityEngine.SceneManagement;
 
 
 public class PlayerIntro : MonoBehaviour
@@ -42,7 +42,7 @@ public class PlayerIntro : MonoBehaviour
     //标题
     public void title()
     {
-        transitionManager.LoadScene(GameSceneName.StartScene, "SlowFade", 0f);
+        transitionManager.LoadScene(GameSceneName.StartScene, "SlowFade", 1f);
     }
 
     public void SaveGame() {
@@ -59,7 +59,11 @@ public class PlayerIntro : MonoBehaviour
     public void Return() {
         SaveGame();
         AudioManager.Instance?.musicSource?.Stop();
-        sceneName = GameSceneName.StartScene;
+        string name = SceneManager.GetActiveScene().name;
+        if (name == GameSceneName.MapScene)
+            sceneName = GameSceneName.StartScene;
+        else if(name == GameSceneName.GameScene)
+            sceneName = GameSceneName.MapScene;
         transitionManager.LoadScene(sceneName, "RectangleGrid", 0.2f);
         
     }

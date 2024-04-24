@@ -4,7 +4,7 @@ using UnityEngine;
 namespace DouShuQiTan {
     [Serializable]
     [CreateAssetMenu(
-    menuName = "Game/Templates",
+    menuName = "Game/Templates/枢元Upgrade" ,
     fileName = "枢元Upgrade")]
     public class 枢元UpgradeTemplate : ScriptableObject {
         public string Name;

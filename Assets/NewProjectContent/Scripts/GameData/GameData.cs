@@ -62,7 +62,7 @@ public static class GameData {
     //各属性是否强化
     public static int HuoUp, ShuiUp, TuUp, FengUp;
 
-    public static int 咒印index = -1;
+    public static string Selected咒印Name = null;
 
     public static void Init() {
         CardData.Init();
@@ -85,18 +85,18 @@ public static class GameData {
         ShuiUp = 0;
         HuoUp = 0;
         FengUp = 0;
-        咒印index = -1;
+        Selected咒印Name = "";
     }
 
     public static void Save() {
-        if (咒印index != -1) {
-            PlayerPrefs.SetInt("咒印index", 咒印index);
+        if (Selected咒印Name == "") {
+            PlayerPrefs.SetString("咒印Name", Selected咒印Name);
         }
     }
 
     public static void Load() {
         HP = PlayerPrefs.GetFloat("HP",50);
-        咒印index = PlayerPrefs.GetInt("咒印index", -1);
+        Selected咒印Name = PlayerPrefs.GetString("咒印Name", "");
     }
    
 }
@@ -119,6 +119,7 @@ namespace DouShuQiTan {
 
         public void SaveCard() {
             string json = JsonConvert.SerializeObject(CardInfos, Formatting.Indented);
+            if (json=="{}") return;
             File.WriteAllText(CardInfoFilePath, json);
         }
     }

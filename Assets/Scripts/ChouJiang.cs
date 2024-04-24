@@ -8,7 +8,7 @@ public class ChouJiang : MonoBehaviour
 {
     float t = 0;
 
-    public int PlayerChoose = -1;
+    public string PlayerChoose = "";
     private UI_MapStartButton button;
 
     private void Awake() {
@@ -44,15 +44,15 @@ public class ChouJiang : MonoBehaviour
             transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("choujiang", false);
         yield return new WaitForSeconds(2.6f);
         for (int i = 0; i < 4; i++)
-            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().enable = true;
+            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().Enable();
         yield return WaitPlayerChoose();
     }
 
     private IEnumerator WaitPlayerChoose() {
-        yield return new WaitUntil(() => PlayerChoose !=-1);
+        yield return new WaitUntil(() => PlayerChoose !="");
         for (int i = 0; i < 4; i++)
-            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().enable = false;
-        GameData.咒印index = PlayerChoose;
+            transform.GetChild(i).GetComponentInChildren<UI_咒印Toogle>().Disable();
+        GameData.Selected咒印Name = PlayerChoose;
         button.Enable();
     }
 }

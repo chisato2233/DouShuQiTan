@@ -10,6 +10,14 @@ namespace DouShuQiTan {
     public class CardLibrary:ScriptableObject {
         public List<CardTemplate> Cards;
 
+        private Dictionary<string, CardTemplate> CardDict = new Dictionary<string, CardTemplate>();
+        void Awake() {
+            foreach (var cardTemplate in Cards) {
+                CardDict[cardTemplate.Name] = cardTemplate;
+            }
+        }
+
+
         public CardTemplate FindCardTemplate(string CardName) {
             return Cards.Find(x => x.Name == CardName);
         }

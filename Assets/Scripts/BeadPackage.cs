@@ -113,18 +113,18 @@ public class BeadPackage : MonoBehaviour
 
     }
 
-    private void SelectShow咒印(int index) {
+    private void SelectShow咒印(string index) {
         switch (index) {
-            case 0:
+            case "水咒印":
                 Find咒印展示("Shui");
                 break;
-            case 1:
+            case "风咒印":
                 Find咒印展示("Feng");
                 break;
-            case 2:
+            case "火咒印":
                 Find咒印展示("Huo");
                 break;
-            case 3:
+            case "土咒印":
                 Find咒印展示("Tu");
                 break;
         }
@@ -147,7 +147,7 @@ public class BeadPackage : MonoBehaviour
     }
 
     void Start() {
-        SelectShow咒印(GameData.咒印index);
+        SelectShow咒印(GameData.Selected咒印Name);
     }
 
     // Update is called once per frame

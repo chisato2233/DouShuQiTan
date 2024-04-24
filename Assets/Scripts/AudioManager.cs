@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance {
         get {
             if (instance == null) {
-                instance = FindObjectOfType<AudioManager>();
-            }
-            if (instance == null) {
                 instance = Instantiate(new GameObject("AudioManager")).AddComponent<AudioManager>();
+                DontDestroyOnLoad(instance.gameObject);
             }
-            DontDestroyOnLoad(instance.gameObject);
             return instance;
         }
         private set { instance = value; }
@@ -21,19 +19,15 @@ public class AudioManager : MonoBehaviour
     public sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
     private static AudioManager instance;
+
+    public void OnApplicationResume() {
+       
+    }
     public void Awake()
     {
-        //if(Instance==null)
-        //{
-        //    Instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-
-        Screen.SetResolution(1920, 1080,FullScreenMode.Windowed);
+        DontDestroyOnLoad(gameObject);
+        instance = this;
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
     }
     public void PlayMusic(string name) {
         if (musicSounds == null) return;
