@@ -62,25 +62,47 @@ public class MapNodeLayer : MonoBehaviour {
     }
 
     protected void RenderLine(RuntimeMapNode from) {
+
         UILineRenderer lineRenderer = from.GetComponentInChildren<UILineRenderer>();
         if (!lineRenderer) {
             GameObject lineObject = new GameObject("Line");
             lineObject.transform.SetParent(from.transform, false); // 设置父对象，并保留局部坐标
-            lineObject.AddComponent<RectTransform>();
-            
+            RectTransform rectTransform = lineObject.AddComponent<RectTransform>();
+            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.sizeDelta = new Vector2(100, 100); // 根据需要调整大小
+
             lineRenderer = lineObject.AddComponent<UILineRenderer>();
         }
 
-        List<Vector2> positions = new List<Vector2> { from.transform.position };
+        // 初始化位置列表
+        List<Vector2> positions = new List<Vector2>();
 
+        // 转换 from 节点的位置
+        Vector2 screenPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            from.transform.parent as RectTransform, 
+            from.transform.position, 
+            Camera.main, 
+            out screenPoint
+        );
+        positions.Add(screenPoint);
+
+        // 转换 linkedNode 的位置
         foreach (var linkedNode in from.LinkedList) {
-            positions.Add(linkedNode.transform.position); // 添加连接的节点位置
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                from.transform.parent as RectTransform, 
+                linkedNode.gameObject.transform.position, 
+                Camera.main, 
+                out screenPoint
+            );
+
+            positions.Add(screenPoint);
         }
 
         lineRenderer.Points = positions.ToArray();
         lineRenderer.LineList = true; // 设置为虚线
         lineRenderer.LineThickness = 2;
-        lineRenderer.SetVerticesDirty(); // 通知renderer更新其内容
+        lineRenderer.SetVerticesDirty(); // 强制更新渲染器内容
     }
 
 

@@ -9,53 +9,63 @@ using UnityEngine.Events;
 
 namespace DouShuQiTan {
     public class HealthComponent : TurnHandler {
-        public float Hp = 100f;
-        public float Shield = 0f;
+        public float MaxHp = 100f;
+        public float InitShield = 0f;
+
+        public float CurrentHealth { get; set; }
+        public float CurrentShield { get; set; }
 
 
-        private float CurrentHealth;
-        private float CurrentShield;
-        public UnityEvent<HealthComponent> OnHealthChange;
-        public UnityEvent<HealthComponent> OnShieldChange;
-        
+        public UnityEvent<float> OnHealthChange;
+        public UnityEvent<float> OnShieldChange;
+
+
+
+        void Start() {
+            CurrentShield = InitShield;
+            CurrentHealth = MaxHp;
+        }
 
         // 造成伤害
         public void ApplyDamage(float val) {
-            if (Shield > 0) {
-                var shieldDamage = Mathf.Min(Shield, val);
-                var OutDamage = val - shieldDamage;
-                Shield -= shieldDamage;
-                if (OutDamage > 0) {
-                    CurrentHealth -= Mathf.Clamp(OutDamage, 0, Hp - CurrentHealth);
-                    OnHealthChange?.Invoke(this);
-                }
-            }
-        }
-
-        public float GetCurrentHealth() {
-            return CurrentHealth;
-        }
-
-        public float GetCurrentShield() {
-            return CurrentShield;
-        }
-
-
-        public void ApplyHeal(float val) {
-            Mathf.Clamp(val, 0, Hp - CurrentHealth);
-            CurrentHealth += val;
-            OnHealthChange?.Invoke(this);
-        }
-
-        public void ChangeShield(float val) {
-            CurrentShield = Mathf.Max(CurrentShield + val, 0);
-            OnShieldChange?.Invoke(this);
+            var outDamage = HandleShieldDamage(val);
+            HandleHealthDamage(outDamage);
         }
 
         
-        protected override IEnumerator OnTurn() {
-            ChangeShield(-CurrentShield);
-            yield return null; 
+        public void ApplyHeal(float val) {
+            var old = CurrentHealth;
+            CurrentHealth = Mathf.Clamp(val+CurrentHealth, 0, MaxHp);
+            OnHealthChange?.Invoke(val - old);
+        }
+
+        public void ChangeShield(float val) {
+            var Old = CurrentShield;
+            CurrentShield = Mathf.Max(val, 0);
+            OnShieldChange?.Invoke(val - Old);
+        }
+
+        public void ChangeHealth(float val) {
+            var Old = CurrentHealth;
+            CurrentHealth = Mathf.Clamp(val, 0,MaxHp);
+            OnShieldChange?.Invoke(val - Old);
+        }
+
+
+        float HandleShieldDamage(float val) {
+            if (CurrentShield <= 0) return val;
+            var shieldDamage = Mathf.Min(CurrentShield, val); //对护盾伤害
+            CurrentShield -= shieldDamage;
+            OnShieldChange?.Invoke(shieldDamage);
+            return MathF.Max(0, val - shieldDamage); //返回溢出伤害，要么是0要么是一个正数
+        }
+
+        void HandleHealthDamage(float val) {
+            if (val <= 0) return;
+            var old = CurrentHealth;
+            CurrentHealth = Mathf.Clamp(CurrentHealth - val, 0, MaxHp);
+            
+            OnHealthChange?.Invoke(CurrentHealth - old);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 
 namespace DouShuQiTan {
@@ -26,7 +27,7 @@ namespace DouShuQiTan {
             }
 
             // 取前count个数字
-            return numbers.GetRange(0, count);
+            return numbers.GetRange(0, Math.Min(numbers.Count,count));
         }
 
         public static int ChooseIndexByProbability(params float[] probabilities) {

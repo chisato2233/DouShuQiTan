@@ -14,13 +14,27 @@ namespace DouShuQiTan {
         private Dictionary<string, 枢元Template> Dict = new Dictionary<string, 枢元Template>();
         
         void Awake() {
-            foreach (var cardTemplate in 枢元Lists) {
-                Dict[cardTemplate.Name] = cardTemplate;
-            }
         }
 
-        public (Sprite, Sprite) Find(string name) {
-            return Dict[name].Sprites;
+        public Sprite FindTop(string name) {
+            if (Dict.TryGetValue(name, out var value)) {
+                return value.Top;
+            }
+            
+            return (Dict[name] = FindImpl(name)).Top;
+        }
+
+        public Sprite FindBottom(string name) {
+            if (Dict.TryGetValue(name, out var value)) {
+                return value.Bottom;
+            }
+
+            return (Dict[name] = FindImpl(name)).Bottom;
+        }
+
+
+        private 枢元Template FindImpl(string name) {
+            return 枢元Lists.Find(x => x.Name == name);
         }
     }
 

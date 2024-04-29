@@ -9,28 +9,24 @@ using UnityEngine.Events;
 
 namespace DouShuQiTan {
     public class TurnHandler : MonoBehaviour {
-        UnityEvent OnTurnStart;
-        UnityEvent OnTurnEnd;
-        private List<TurnHandler> otherTurnHandlers;
+        public UnityEvent OnTurnStart = new UnityEvent();
+        public UnityEvent OnTurnEnd = new UnityEvent();
+
+        public List<TurnHandler> ChildTurnHandler = new List<TurnHandler>();
 
         void Awake() {
 
-            foreach (var turn in GetComponents<TurnHandler>())
+            foreach (var turn in ChildTurnHandler)
                 OnTurnStart.AddListener(()=>turn.OnTurnStart?.Invoke());
 
-            foreach (var turn in GetComponentsInChildren<TurnHandler>())
-                OnTurnStart.AddListener(() => turn.OnTurnEnd?.Invoke());
         }
-        public IEnumerator StaticTurnRoutine() {
+        public IEnumerator TurnRoutine() {
             OnTurnStart.Invoke();
             
             yield return OnTurn();
 
-            foreach (var turn in GetComponents<TurnHandler>()) 
-                yield return turn.OnTurn();
-            
-            foreach (var turn in GetComponentsInChildren<TurnHandler>())
-                yield return turn.OnTurn();
+            foreach (var turn in ChildTurnHandler) 
+                yield return turn.TurnRoutine();
             
             OnTurnEnd.Invoke();
         }

@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace DouShuQiTan {
     public class SystemBase : MonoBehaviour {
-        protected CharacterObject Player;
-        protected List<CharacterObject> Enemies;
+        protected GameObject Player;
+        protected List<GameObject> Enemies;
 
-        public virtual void Initialize(CharacterObject player, List<CharacterObject> enemies) {
+        public virtual void Initialize(GameObject player, List<GameObject> enemies) {
             Player = player;
             Enemies = enemies;
         }

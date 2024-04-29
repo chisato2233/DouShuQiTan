@@ -8,9 +8,14 @@ using UnityEngine.Events;
 namespace DouShuQiTan{
     public static class GameIntro {
         public static PlayerState playerState = new PlayerState(52);
+        
+
         public static int MapLayer = 0;
         public static UnityEvent OnSave = new UnityEvent();
         public static UnityEvent OnLoad = new UnityEvent();
+
+        public static GameBoost GameSystem => __GlobalGameBoostInstance;
+        public static GameBoost __GlobalGameBoostInstance = null;
 
         public static void Load() {
             OnLoad.Invoke();
